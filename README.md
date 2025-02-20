@@ -122,7 +122,7 @@ TODO
 ### Part 3: Project Work
 Projects should:
 - Focus on representation learning
-- Be completed in groups of 3-5
+- Be completed in groups of 2-4
 - Use Python as the primary programming language
 - Be submitted as a GitHub repository
 - Include:

@@ -73,6 +73,7 @@ This project challenges the assumption that Large Language Models are the best t
 - Create or find a dataset for text concept prediction
 - Train specialized text encoders specifically for concept prediction
 - Compare these specialized models against LLMs at interpreting neural networks
+
 The key question is whether LLMs are trurly good at interpreting neuron activation in case of concept neurons. Students will experiment with different approaches to improve the interpretation pipeline, such as:terpretation pipeline, such as:
 - Different training strategies for concept prediction
 - Various prompting methods for LLMs
