@@ -96,14 +96,15 @@ Here we will cover the basics of representation learning with topics such as sel
 - Project topic selection and discussion
 - Project expectations overview
 
-**List of Potential Topics**:
-TODO
+## List of Topics is provided in the [`list_of_topics.md`](list_of_topics.md) file.
 
 ## Part 2: Paper Writing Workshop
 - Group 2: Wednesday, 2025-04-09 and 2025-04-16
 - Group 3: Tuesday, 2025-04-08 and 2025-04-15
 
-In this part, we will focus on the paper writing journey. I will show you how the process of writing a paper looks like and what are the most important things to remember. I will also provide you with some tips and tricks on how to write a good paper. After this lecture, you will have to choose a paper and write a short summary of it with paraphrasing.
+In this part, we will focus on the paper writing journey. 
+I will show you how the process of writing a paper looks like and what are the most important things to remember. 
+I will also provide you with some tips and tricks on how to write a good paper. After this lecture, you will have to choose a paper and write a short summary of it with paraphrasing.
 
 **Deadline**: Group 2 2025-04-30; Group 3 2025-04-29
 
@@ -121,7 +122,7 @@ TODO
 ### Part 3: Project Work
 Projects should:
 - Focus on representation learning
-- Be completed in groups of 2-3
+- Be completed in groups of 3-5
 - Use Python as the primary programming language
 - Be submitted as a GitHub repository
 - Include:
