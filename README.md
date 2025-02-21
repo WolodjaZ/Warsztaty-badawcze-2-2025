@@ -22,7 +22,7 @@ This repository serves as the central hub for groups 2 and 3 from the `Laborator
 ## 📊 Grading System
 The laboratory/project portion accounts for 60% of the final course grade, broken down as follows:
 
-- Paper Summary: 0-10 points
+- Paper Workshop Summary: 0-10 points
 - Project Work: 0-35 points
 - Activity Points: 0-5 points (and optional tasks after each lecture)
 
@@ -33,10 +33,20 @@ Final Grade Scale:
 | 31-35 | 3.5 |
 | 36-40 | 4.0 |
 | 41-45 | 4.5 |
-| 46-50 | 5.0 |
+| 46-50 | 5.0 | 
+
+**if Workshop is excluded:**
+| Points | Grade |
+|--------|--------|
+| 21-24 | 3.0 |
+| 25-28 | 3.5 |
+| 29-32 | 4.0 |
+| 33-36 | 4.5 |
+| 37-40 | 5.0 |
 
 ## 📅 Course Structure
-The plan is to have 9 hours of lectures (I will use both laboratory and project hours) and at 10th hour we will finish discussing the project topic and formulating the groups. Next two hours of laboratory will be dedicated to paper writing workshop and the rest of the time will be for the project work and report. The course will be divided into three main parts:
+The plan is to have 6 hours of lectures (I will use both laboratory and project hours) and at 6th hour we will finish discussing the project topic and formulating the groups. Next two hours of laboratory will be dedicated to paper writing workshop and the rest of the time will be for the project work and report. The workshop part can be excluded if majority of students will not be interested in it, but remember the grade will be based only on the project.
+The course will be divided into three main parts:
 
 ## Part 1: Theoretical Foundations
 Here we will cover the basics of representation learning with topics such as self-supervised learning, contrastive learning, masked-based representation and interpretable representation learning. I will focus on foundations and various state-of-the-art methods in the field.
@@ -128,8 +138,23 @@ Projects should:
 - Include:
   - Source code or Jupyter notebooks
   - Final presentation
-  - Project report
   - Live Demo (bonus points)
+
+The Grading System for the project is as follows:
+- <span style="color:green">Basic level done </span>: 0-5 points
+- <span style="color:purple">Intermediate level done  </span>: 0-10 points
+- <span style="color:red">Advanced level done  </span>: 0-5 points
+- Presentation: 0-9 points
+  - Structure: 0-2 points
+  - Content: 0-2 points
+  - Clarity: 0-2 points
+  - Visuals: 0-2 points
+  - Interaction with audience: 0-1 points
+- Code Quality: 0-4 points
+  - Readability: 0-2 points
+  - Reproducibility: 0-1 points
+  - Documentation: 0-1 points
+- Live Demo: 0-2 points
 
 Recommended Demo Tools:
 - [Gradio](https://github.com/gradio-app/gradio)
@@ -139,9 +164,15 @@ Recommended Demo Tools:
 - [Dash](https://github.com/plotly/dash)
 
 **Deadlines**: 
-Presentation - 2025-06-03
-Code and Report - 2025-06-10
+Presentation:
+- Lecture 2025-06-03
+- Group 2 2025-06-04 and 2025-06-11
+- Group 3 2025-06-03 and 2025-06-10
+
+Code and Report
+- Group 2 2025-06-04
+- Group 3 2025-06-03
 
 ---
-*Note: Lecture materials, paper list, and specific deadlines will be updated as the course progresses.*
-*Note: AI tools may be used for assistance, but understanding of content will be verified.*
+*Lecture materials, paper list, and specific deadlines will be updated as the course progresses.
+AI tools may be used for assistance, but understanding of content will be verified.*
