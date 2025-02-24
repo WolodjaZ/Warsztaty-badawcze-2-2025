@@ -1,0 +1,407 @@
+---
+title: "Introduction"
+subtitle: "Representation Learning"
+author: "Vladimir Zaigrajew"
+jupyter: warsztat_badacza
+engine: jupyter
+date: "2025-02-26"
+execute:
+  eval: true
+format:
+  beamer:
+    theme: Warsaw
+    fig-cap: false
+    colortheme: whale
+    fonttheme: serif
+    navigation: horizontal
+    aspectratio: 169
+    header-includes: |
+      \usepackage{subcaption}
+      \titlegraphic{\includegraphics[width=0.2\textwidth]{images/mini.png}}
+      \definecolor{unidarkblue}{RGB}{0,60,113}
+      \definecolor{unilightblue}{RGB}{0,90,169}
+      \setbeamercolor{structure}{fg=unidarkblue}
+      \setbeamerfont{title}{size=\Large,series=\bfseries}
+      \setbeamerfont{frametitle}{size=\large,series=\bfseries}
+      \setbeamertemplate{navigation symbols}{}
+      \setbeamertemplate{footline}{
+        \leavevmode
+        \hbox{
+          \begin{beamercolorbox}[wd=.85\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3em,rightskip=.3em]{structure}
+            \footnotesize{Warsztaty badawcze 2 -- Introduction to Representation Learning -- MINI PW -- 2025}
+          \end{beamercolorbox}
+          \begin{beamercolorbox}[wd=.15\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3em,rightskip=.3em plus 1fil,center]{structure}
+            \footnotesize{\insertframenumber\,/\,\inserttotalframenumber}
+          \end{beamercolorbox}
+        }
+      }
+    code-block-bg: "#f2f2f2"
+    code-block-border-left: "#31BAE9"
+    highlight-style: github
+    fig-width: 8
+    fig-height: 5
+    fig-align: center
+    slide-level: 2
+    incremental: false
+    number-sections: true
+    toc: false
+---
+
+## Introduction to Representation Learning
+Vladimir Zaigrajew -
+vladimir.zaigrajew.dokt@pw.edu.pl
+
+Tymoteusz Kwieciński -
+tymoteusz.kwiecinski.stud@pw.edu.pl
+
+You can find us in Room 303, MINI, *PW*
+
+---
+
+Remember every information you can find on our Github Repo:
+
+:::: {.columns}
+::: {.column width="50%"}
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.6\textwidth]{images/repo_qr.png}
+\caption{QR code to course Github Repo}
+\end{center}
+\end{figure}
+:::
+::: {.column width="50%"}
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.6\textwidth]{images/my_qr.png}
+\caption{QR code to our Github Repo}
+\end{center}
+\end{figure}
+:::
+::::
+\
+\
+Let's chat on slack or discord, becouse I don't like Teams :/.
+
+## Core Concept
+
+In machine learning, we usually want to predict some value $y \in Y$ given some data $x \in X$:
+we want to learn a function $f: X  \to Y$
+\
+\
+
+| Domain     | Task                                     | Example Output |
+|:-----------|:-----------------------------------------|:--------------|
+| Image      | Segmentation, Detection, Classification  | Class labels, Bounding boxes |
+| Text       | Sentiment Analysis, Next Word Prediction | Sentiment scores, Text generation |
+| Multimodal | Image Description, Image Generation      | Generated images, Text descriptions |
+
+## Learning Representation
+\vspace{10mm}
+Instead of learning a direct mapping $f: X \to Y$ from input to output, representation learning approach split the problem into two parts: learning a representation $g: X \to Z$ that transforms raw data into a meaningful feature space, followed by learning a classifier/predictor $h: Z \to Y$.
+
+$X$ and $Y$ don't have to be from the same domain.
+
+The complete model can be expressed as $f(x)=h(g(x))$
+
+## Learning Representation - Why?
+
+This approach brings several advantages. Most importantly, we can learn representations without labels (unsupervised/self-supervised), reducing the need for manual labeling. With good representations, simpler classifiers can then be used for different tasks, making learning faster and more efficient.
+\
+\
+Representation learning transforms complex data into a simpler format that captures important features. Think of face recognition: instead of working with raw pixels, we learn meaningful features like pose and identity, making the recognition task easier.
+
+## Learning Representation - Example
+
+\vspace{1em}
+\begin{center}
+Traditional
+\end{center}
+
+\includegraphics[width=0.35\textwidth]{Introduction_files/nn.png}
+\hfill
+\includegraphics[width=0.35\textwidth]{Introduction_files/supervision.png}
+
+\begin{center}
+With Representation Learning
+\end{center}
+
+\includegraphics[width=0.45\textwidth]{Introduction_files/representation.jpeg}
+\hfill
+\includegraphics[width=0.45\textwidth]{Introduction_files/disentangled_representation.jpeg}
+
+## What makes a good representation? I
+
+- **Smoothness:** Similar inputs should have similar representations. If $x_{1} \approx x_{2}$, then $g(x_{1}) \approx g(x_{2})$. This fundamental property ensures that our representations are stable and meaningful.
+- **``Less" supervised learning:** Good representations can be learned with minimal supervision, enabling self-supervised and semi-supervised approaches.
+- **Invariances/Equivariance/Coherence:** Generally, small temporal/spatial changes should result in similar representations.\
+Domain specific: image representations should be invariant under transformations like rotations, color jitter etc.
+
+---
+
+\begin{figure}
+\begin{subfigure}{0.3\textwidth}
+\includegraphics[width=\textwidth]{Introduction_files/invariance.png}
+\caption{\textbf{Invariance}\footnotemark\\
+- Example: Face recognition should be invariant to lighting changes\\
+- $h(g(x)) = h(g(T(x)))$, where $T$ is some not important transformation
+}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.3\textwidth}
+\includegraphics[width=\textwidth]{Introduction_files/Equivariance.png}
+\caption{\textbf{Equivariance}\footnotemark[\value{footnote}]\\
+- Example: If you rotate an image, the features should rotate similarly\\
+- If $T$ is a transformation, then $g(T(x)) = T(g(x))$
+}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.35\textwidth}
+\includegraphics[width=\textwidth]{Introduction_files/representation.jpeg}
+\caption{\textbf{Coherence/Smoothness}\\
+- Close inputs should map to close representations\\
+- Important for generalization and robustness\\
+- If $x_1 \approx x_2$, then $g(x_1) \approx g(x_2)$
+}
+\end{subfigure}
+\end{figure}
+\footnotetext{Source: https://towardsdatascience.com/sesn-cec766026179/}
+
+---
+
+- **Smoothness:** Similar inputs should have similar representations. If $x_{1} \approx x_{2}$, then $g(x_{1}) \approx g(x_{2})$. This fundamental property ensures that our representations are stable and meaningful.
+- **``Less" supervised learning:** Good representations can be learned with minimal supervision, enabling self-supervised and semi-supervised approaches.
+- **Invariances/Equivariance/Coherence:** Generally, small temporal/spatial changes should result in similar representations.\
+Domain specific: image representations should be invariant under transformations like rotations, color jitter etc.
+- **Multiple explanatory factors:** Representations should capture diverse aspects of the data, so that the representation is useful for many different tasks.
+
+## What makes a good representation? II
+
+- **Natural clustering:** Representations should reflect natural categories in data, which aligns with human-interpretable groupings.\
+Example: In vehicle classification, representations should cluster vehicles by type (car, truck, motorcycle) rather than by brand.
+- **Hierarchical explanatory factors:** Features organized from concrete to abstract, starting from low-level (edges, colors) to high-level (objects, scenes).
+- **Disentangle underlying factors:** Each dimension represents distinct meaningful features, making it easier to understand and manipulate the representation.
+- **Sparsity:** For any input $x$ , only few factors are relevant $\Rightarrow$ most dimensions of $g(x)$ should be zero.
+
+---
+
+\begin{figure}
+\begin{subfigure}{0.45\textwidth}
+\includegraphics[width=\textwidth]{Introduction_files/hierarchical.png}
+\caption{\textbf{Natural clustering and Hierarchical explanatory factors}}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.45\textwidth}
+\includegraphics[width=\textwidth]{Introduction_files/disentangled_representation.jpeg}
+\caption{\textbf{Disentangle underlying factors and Sparsity}}
+\end{subfigure}
+\end{figure}
+
+## Traditional representation learning algorithms
+
+:::: {.columns}
+::: {.column width="60%"}
+\vspace{20mm}
+- Principal Component Analysis (PCA)
+- Independent Component Analysis (ICA)
+- Linear Discriminant Analysis (LDA)
+- Multidimensional Scaling (MDS)
+- ISOMAP
+:::
+::: {.column width="40%"}
+\includegraphics[width=\textwidth]{Introduction_files/pca.svg.png}
+\footnotemark
+:::
+::::
+\footnotetext{”Principal component analysis.” Wikipedia, Wikimedia Foundation, 10 Apr. 2023, en.wikipedia.org/wiki/Principal component analysis.}
+
+---
+
+:::: {.columns}
+::: {.column width="75%"}
+\vspace{20mm}
+- Principal Component Analysis (PCA)
+- Independent Component Analysis (ICA)
+- Linear Discriminant Analysis (LDA)
+- Multidimensional Scaling (MDS)
+- ISOMAP
+- *t-SNE* (t-Distributed Stochastic Neighbor Embedding)
+- *UMAP* (Uniform Manifold Approximation and Projection)
+:::
+::: {.column width="25%"}
+\includegraphics[width=\textwidth]{Introduction_files/umap.png}
+\footnotemark
+:::
+::::
+\footnotetext{McInnes, Leland, John Healy, and James Melville. "UMAP: uniform manifold approximation and projection for dimension reduction. arXiv." arXiv preprint arXiv:1802.03426 10 (2018).}
+
+
+## Manifold Learning
+
+The manifold hypothesis states that real-world high-dimensional data tends to lie on or near a lower-dimensional manifold.
+
+```{python}
+#| echo: false
+#| cache: true
+
+from sklearn.datasets import load_digits
+import numpy as np
+from sklearn.manifold import TSNE
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load MNIST
+digits = load_digits()
+
+# t-SNE
+np.random.seed(42)
+tsne = TSNE(n_components=2, random_state=42, perplexity=30)
+X_tsne = tsne.fit_transform(digits.data)
+
+# Plot with Seaborn style
+sns.set_theme()
+plt.figure(figsize=(5, 2.8))
+
+# Create scatter plot
+scatter = plt.scatter(X_tsne[:, 0], X_tsne[:, 1], s=4,
+                     c=digits.target, cmap='tab10', alpha=0.6)
+
+# Customize plot
+plt.title("t-SNE visualization of MNIST", fontsize=8)
+plt.xlabel('First t-SNE component', fontsize=8)
+plt.ylabel('Second t-SNE component', fontsize=8)
+
+# Add legend with class names
+legend = plt.legend(handles=scatter.legend_elements()[0], 
+                   labels=[str(i) for i in range(10)],
+                   loc="center left",
+                   fontsize=8,
+                   bbox_to_anchor=(1, 0.5))
+
+plt.tight_layout()
+```
+
+## Neural Networks Representations
+
+Neural networks learn representations at multiple levels:
+
+:::: {.columns}
+::: {.column width="58%"}
+\vspace{5mm}
+- Before Input Layer (pixels, words, etc.)
+- After Input Layer
+- Hidden Layer
+  - Progressively more abstract features
+  - Combine and transform earlier representations
+  - Different layers capture different aspects
+- Final Layers (task-specific representations)
+:::
+::: {.column width="42%"}
+\includegraphics[width=\textwidth]{Introduction_files/nn.png}
+:::
+::::
+
+## CNN Representations
+
+CNNs demonstrate hierarchical representation learning
+\vspace{3mm}
+
+:::: {.columns}
+::: {.column width="50%"}
+\includegraphics[width=\textwidth]{Introduction_files/hierarchical.png}
+:::
+::: {.column width="50%"}
+\vspace{10mm}
+\includegraphics[width=\textwidth]{Introduction_files/cnn.png}
+:::
+::::
+\vspace{4mm}
+```{python}
+#| echo: false
+#| cache: true
+
+import torch
+import torchvision.models as models
+
+class FeatureExtractor():
+    def __init__(self, model, layers):
+        self.model = model
+        self.layers = layers
+        self.features = {layer: torch.empty(0) for layer in layers}
+        
+        for layer_id in layers:
+            layer = dict([*self.model.named_modules()])[layer_id]
+            layer.register_forward_hook(self.get_features(layer_id))
+    
+    def get_features(self, layer_id):
+        def hook(model, input, output):
+            self.features[layer_id] = output
+        return hook
+
+    def __call__(self, x):
+        self.model(x)
+        return self.features
+
+# Example usage
+model = models.resnet18(pretrained=True)
+layers_to_extract = ['layer1', 'layer2', 'avgpool']
+extractor = FeatureExtractor(model, layers_to_extract)
+
+# Get features
+image = torch.randn(1, 3, 224, 224)  # Example input
+features = extractor(image)
+for key, value in features.items():
+    print(f"Resnet18 layer {key} representation shape {value.shape}")
+```
+
+## Transformers Representations
+
+:::: {.columns}
+::: {.column width="32%"}
+\includegraphics[width=0.95\textwidth]{Introduction_files/transformer.png}
+\footnotemark
+:::
+::: {.column width="68%"}
+\scriptsize
+```{python}
+#| echo: true
+#| cache: true
+import torch
+import transformer_lens
+
+# Load a model (eg GPT-2 Small)
+model = transformer_lens.HookedTransformer.from_pretrained(
+  "gpt2-small")
+
+# Run the model and get logits and activations
+input_str = "Tancowala ryba z rakiem, ryba z rakiem"
+with torch.no_grad():
+    logits, activations = model.run_with_cache(input_str)
+block_to_visualize = activations['blocks.11.ln1.hook_normalized']
+```
+\
+```{python}
+print(f"Input text: {input_str}")
+print(f"Logits shape: {logits.shape}")
+print(f"After embedder layer: {activations['hook_embed'].shape}")
+print(f"After Layer 11: {block_to_visualize.shape}")
+```
+:::
+::::
+\footnotetext{Vaswani,Ashish, et al. "Attention is all you need." Advances in neural information processing systems 30 (2017).}
+
+## Closing Thoughts
+
+Key takeaways about representation learning:
+
+1. Data representation matters
+   - Raw data (images, text) is often not optimal for ML models
+   - Good representations make learning easier
+
+2. Multiple levels of abstraction
+   - From raw features to high-level concepts
+   - Different representations serve different purposes
+
+3. Future directions
+   - Self-supervised learning (**Next week**)
+   - Multi-modal representations
+   - More interpretable representations
