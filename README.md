@@ -6,11 +6,11 @@ This repository serves as the central hub for groups 2 and 3 from the `Laborator
 ## 👥 Teaching Team
 - **Vladimir Zaigrajew** (Lead Instructor)
   - Email: vladimir.zaigrajew.dokt@pw.edu.pl
-  - Location: Room 303, MINI, PW
+  - Location: Room 316, MINI, PW
 
 - **Tymoteusz Kwieciński** (Co-Instructor)
-  - Email: [To be announced]
-  - Location: Room 303, MINI, PW
+  - Email: tymoteuszkwiecinski@gmail.com
+  - Location: Room 316, MINI, PW
 
 ## 🔗 Essential Resources
 - [Main Course Repository](https://github.com/mini-pw/2025-warsztaty-badawcze)
@@ -54,15 +54,21 @@ Here we will cover the basics of representation learning with topics such as sel
 ## Week 1: Introduction to Representation Learning
 - Group 2: Wednesday, 2025-02-26
 - Group 3: Tuesday, 2025-02-25
-- [Slides]() || [PDF]()
-- TODO
+- [PDF](lectures/Introduction.pdf) || [Markdown](lectures/Introduction.qmd)
+- Get to know the course
+- Talk about the projects
+- Representation learning - a solution for human ML labour
+- I understand that some of you are not familiar with Deep Learning, **so please just ask me** if you have any questions. I don't want people to feel lost during the course and be afraid of the projects.
+- Task for a week:
+  - Check [google colab](https://colab.google) here is [tutorial](https://www.geeksforgeeks.org/how-to-use-google-colab/), just try to compile it, etc. Remember you don't need to provide any payment information for a free tier.
+  - For people who are not familiar with Deep Learning, I recommend to watch [this](https://www.youtube.com/watch?v=aircAruvnKk&list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi). For my course if you will understand it, the rest will be easy.
 - References:
-  - TODO
+  - [Y Bengio; Representation learning: A review and new perspectives; 2013](https://ieeexplore.ieee.org/abstract/document/6472238)
 
 ## Week 2: Self-supervised Learning
 - Group 2: Wednesday, 2025-03-05
 - Group 3: Tuesday, 2025-03-04
-- [Slides]() || [PDF]()
+- [PDF](lectures/Self_supervised_Learning.pdf) || [Markdown](lectures/Self_supervised_Learning.qmd)
 - TODO
 - References:
   - TODO
@@ -70,7 +76,7 @@ Here we will cover the basics of representation learning with topics such as sel
 ## Week 3: Contrastive Learning
 - Group 2: Wednesday, 2025-03-12
 - Group 3: Tuesday, 2025-03-11
-- [Slides]() || [PDF]()
+- [PDF]() || [Markdown]()
 - TODO
 - References:
   - TODO
@@ -78,7 +84,7 @@ Here we will cover the basics of representation learning with topics such as sel
 ## Week 4: Masked-based Representation Learning
 - Group 2: Wednesday, 2025-03-19
 - Group 3: Tuesday, 2025-03-18
-- [Slides]() || [PDF]()
+- [PDF]() || [Markdown]()
 - TODO
 - References:
   - TODO
@@ -86,7 +92,7 @@ Here we will cover the basics of representation learning with topics such as sel
 ## Week 5: Exploring Self-supervised Learned Representations 
 - Group 2: Wednesday, 2025-03-26
 - Group 3: Tuesday, 2025-03-25
-- [Slides]() || [PDF]()
+- [PDF]() || [Markdown]()
 - TODO  
 - References:
   - TODO
@@ -94,7 +100,7 @@ Here we will cover the basics of representation learning with topics such as sel
 ## Week 6: Interpretable Representation Learning 
 - Group 2: Wednesday, 2025-04-02
 - Group 3: Tuesday, 2025-04-01
-- [Slides]() || [PDF]()
+- [PDF]() || [Markdown]()
 - TODO  
 - References:
   - TODO
