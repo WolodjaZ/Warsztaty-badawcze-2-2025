@@ -238,7 +238,7 @@ This project explores how Sparse Autoencoders (SAEs) can enhance information ret
    - [SAE CLIP Repo](https://github.com/neuroexplicit-saar/discover-then-name?tab=readme-ov-file)
    - [CC3m Dataset](https://huggingface.co/datasets/pixparse/cc3m-wds)
    - [IR benchmark paper](https://aclanthology.org/Q14-1006.pdf)
-   - [IR text dataset (title and abstract)](https://huggingface.co/datasets/arxiv-community/arxiv_dataset)
+   - [IR text dataset (title and text)](https://huggingface.co/datasets/mteb/scifact)
 
 ### Project 7: Sparse Autoencoders (SAE) as an Explainability Method for Downstream Tasks
 **Project Overview**

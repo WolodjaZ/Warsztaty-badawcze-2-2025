@@ -59,19 +59,24 @@ Here we will cover the basics of representation learning with topics such as sel
 - Talk about the projects
 - Representation learning - a solution for human ML labour
 - I understand that some of you are not familiar with Deep Learning, **so please just ask me** if you have any questions. I don't want people to feel lost during the course and be afraid of the projects.
-- Task for a week:
-  - Check [google colab](https://colab.google) here is [tutorial](https://www.geeksforgeeks.org/how-to-use-google-colab/), just try to compile it, etc. Remember you don't need to provide any payment information for a free tier.
-  - For people who are not familiar with Deep Learning, I recommend to watch [this](https://www.youtube.com/watch?v=aircAruvnKk&list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi). For my course if you will understand it, the rest will be easy.
 - References:
   - [Y Bengio; Representation learning: A review and new perspectives; 2013](https://ieeexplore.ieee.org/abstract/document/6472238)
+
+**Exercise**:
+  - Check [google colab](https://colab.google) here is [tutorial](https://www.geeksforgeeks.org/how-to-use-google-colab/), just try to compile it, etc. Remember you don't need to provide any payment information for a free tier.
+  - For people who are not familiar with Deep Learning, I recommend to watch [this](https://www.youtube.com/watch?v=aircAruvnKk&list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi). For my course if you will understand it, the rest will be easy.
+  - For people who are familiar with Deep Learning, I recommend watching lectures from my AI celebrity crush Andrey Karpathy. He served as Director of AI at Tesla, was a researcher at OpenAI, and completed his PhD under Fei-Fei Li at Stanford University, where he created CS231n, a brilliant deep learning for computer vision course that I highly recommend. Here is the link to his [YouTube channel](https://www.youtube.com/@AndrejKarpathy).
 
 ## Week 2: Self-supervised Learning
 - Group 2: Wednesday, 2025-03-05
 - Group 3: Tuesday, 2025-03-04
 - [PDF](lectures/Self_supervised_Learning.pdf) || [Markdown](lectures/Self_supervised_Learning.qmd)
 - TODO
-- References:
-  - TODO
+
+**Exercise**:
+
+Let's get familiar with the tools we will be using for the project: [PyTorch](https://pytorch.org/). Pytorch is a free and open-source machine learning library which is now renowned as the best library for Deep Learning so we also will use it. I recommend analyzing the tutorial from the [official website](https://pytorch.org/tutorials/beginner/pytorch_with_examples.html) but it is not mandatory. What I want is to take the code from this [tutorial](https://pytorch.org/tutorials/beginner/transfer_learning_tutorial.html) and reproduce it on your own in Google Colab. I highly recommend commenting or explaining in markdown each section of the code so you will understand it better, and if you are not sure about something or you don't understand it, I will write a comment on it and explain it to you. The completed and compiled code (notebook) you will send me a link to it on Slack. If everything will be ok, I will give you **1** point for it.
+
 
 ## Week 3: Contrastive Learning
 - Group 2: Wednesday, 2025-03-12

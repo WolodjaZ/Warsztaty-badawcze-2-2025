@@ -1,0 +1,564 @@
+---
+title: "Introduction"
+subtitle: "Representation Learning"
+author: "Vladimir Zaigrajew"
+jupyter: warsztat_badacza
+engine: jupyter
+date: "2025-02-26"
+execute:
+  eval: true
+format:
+  beamer:
+    theme: Warsaw
+    fig-cap: false
+    colortheme: whale
+    fonttheme: serif
+    navigation: horizontal
+    aspectratio: 169
+    header-includes: |
+      \usepackage{subcaption}
+      \titlegraphic{\includegraphics[width=0.2\textwidth]{images/mini.png}}
+      \definecolor{unidarkblue}{RGB}{0,60,113}
+      \definecolor{unilightblue}{RGB}{0,90,169}
+      \setbeamercolor{structure}{fg=unidarkblue}
+      \setbeamerfont{title}{size=\Large,series=\bfseries}
+      \setbeamerfont{frametitle}{size=\large,series=\bfseries}
+      \setbeamertemplate{navigation symbols}{}
+      \setbeamertemplate{footline}{
+        \leavevmode
+        \hbox{
+          \begin{beamercolorbox}[wd=.85\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3em,rightskip=.3em]{structure}
+            \footnotesize{Warsztaty badawcze 2 -- Introduction to Representation Learning -- MINI PW -- 2025}
+          \end{beamercolorbox}
+          \begin{beamercolorbox}[wd=.15\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3em,rightskip=.3em plus 1fil,center]{structure}
+            \footnotesize{\insertframenumber\,/\,\inserttotalframenumber}
+          \end{beamercolorbox}
+        }
+      }
+    code-block-bg: "#f2f2f2"
+    code-block-border-left: "#31BAE9"
+    highlight-style: github
+    fig-width: 8
+    fig-height: 5
+    fig-align: center
+    slide-level: 2
+    incremental: false
+    number-sections: true
+    toc: false
+---
+
+## Introduction to Representation Learning
+Vladimir Zaigrajew -
+vladimir.zaigrajew.dokt@pw.edu.pl
+
+Tymoteusz Kwieciński -
+tymoteuszkwiecinski@gmail.com
+
+You can find us in Room 316, MINI, *PW*
+
+---
+
+Remember every information you can find on our Github Repo:
+
+:::: {.columns}
+::: {.column width="50%"}
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.6\textwidth]{images/repo_qr.png}
+\caption{QR code to course Github Repo}
+\end{center}
+\end{figure}
+:::
+::: {.column width="50%"}
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.6\textwidth]{images/my_qr.png}
+\caption{QR code to our Github Repo}
+\end{center}
+\end{figure}
+:::
+::::
+
+## Recap from last lecture
+
+- Representation Learning is a subfield of machine learning that instead of learning mapping $f: X \to Y$ learns mapping $f: X \to Z$ where $Z$ is a latent space.
+- We can learn representation in a semi-supervised/self-supervised way removing the need for labels.
+- Models learn from native data representation (e.g. images, text, audio) but this is not always the most efficient way.
+- We have traditional methods of representation learning (PCA, t-SNE, UMAP) and deep learning methods.
+- We can use representation learning for clustering, classification, regression, and generative tasks.
+- Each deep learning model has its own representation learning method, explicitly or implicitly.
+
+
+## Self-supervised Learning (SSL)
+
+**The term self-supervised learning was coined at 1990!**
+\
+\
+> ... the model should not only predict the reinforcement units but also the other input units
+
+\begin{center}
+\includegraphics[width=0.75\textwidth]{Self_supervised_Learning_files/ssl.png}
+\end{center}
+\footnotemark
+
+\footnotetext{Schmidhuber, J. (1990). Making the world differentiable: on using self supervised fully recurrent neural networks for dynamic 
+reinforcement learning and planning in non-stationary environments (Vol. 126). Inst. für Informatik.}
+
+## SSL overview
+
+\begin{center}
+\includegraphics[width=0.9\textwidth]{Self_supervised_Learning_files/ssl_overview.png}
+\end{center}
+\
+**Pretext task** - a supervised task that is used to learn representation of the data.
+**Fine-tuning** - a supervised task that is used to adapt the model to a specific task.
+**Downstream task** - a specific task that is used to evaluate the performance of the model.\
+**Transfer learning** - applying knowledge gained from one task to improve performance on a different, but related task.
+
+## SSL overview - GPT3 Example
+
+\begin{center}
+\includegraphics[width=0.9\textwidth]{Self_supervised_Learning_files/ssl_overview_gpt.png}
+\end{center}
+\
+\
+**Pretext task** - training the model to predict the next word in a sentence.
+**Fine-tuning** - prepare data in instruction-following format and train the model to follow instructions.\
+**Downstream task** - assessing the model's performance on specific applications (e.g. summarization, translation, etc.).
+
+## Downstream task
+
+**Downstream tasks** are specific applications where models are deployed, utilizing the learned representations to perform targeted predictions or generate outputs based on new input data.
+\vspace{5mm}
+\begin{center}
+\includegraphics[width=0.9\textwidth]{Self_supervised_Learning_files/downstream_task.png}
+\end{center}
+
+## Transfer learning: Using pretrained weights to different task
+
+:::: {.columns}
+::: {.column width="30%"}
+\vspace{3mm}
+What is more efficient?
+\
+\
+Teach a 40 year old mathematician to play chess or teach a young child to play chess?
+\
+\
+Transfer learning can improve speed and test accuracy (**marginal!**)
+:::
+::: {.column width="70%"}
+\vspace{5mm}
+\begin{center}
+\includegraphics[width=\textwidth]{Self_supervised_Learning_files/transfer_learning.png}
+\end{center}
+\footnotemark
+:::
+::::
+\footnotetext{Raghu, M., Zhang, C., Kleinberg, J., \& Bengio, S. (2019). Transfusion: Understanding transfer learning for medical imaging. Advances in neural information processing systems, 32.}
+
+## Evaluation
+
+- **Linear Probing (Evaluation)** - train a linear classifier on top of the frozen representation. Trained on MNIST dataset, train a linear classifier on top of the frozen representation to classify digits.
+  - Top-1 accuracy: accuracy of the model on the test set.
+  - Top-5 accuracy: accuracy of the model on the test set when the correct label is in the top 5 predictions.
+- **KNN evaluation** - use the learned representation to perform k-nearest neighbors classification. Having the learned representation, we can use it to perform k-nearest neighbors classification on the test set.
+- **Transfer learning** - fine-tune the model on a specific task and assess its effectiveness on unseen data.
+
+## Evaluation - Generative models
+
+- **Transfer learning** - fine-tune the model on a specific task and assess its effectiveness on unseen data.
+- **Zero-shot evaluation** - evaluate the model on a specific task without any fine-tuning.
+- **Few-shot evaluation** - evaluate the model on a specific task with a small amount of fine-tuning.
+
+## SSL overview - one more time
+
+\begin{center}
+\includegraphics[width=0.9\textwidth]{Self_supervised_Learning_files/ssl_overview.png}
+\end{center}
+\
+**Pretext task** - a supervised task that is used to learn representation of the data.
+**Downstream task** - a specific task that is used to evaluate the performance of the model.\
+**Transfer learning** - applying knowledge gained from one task to improve performance on a different, but related task.
+
+## Autoencoders (1987)
+
+:::: {.columns}
+::: {.column width="47%"}
+\vspace{5mm}
+Pretext task?
+\
+\
+Downstream task?
+:::
+::: {.column width="53%"}
+\vspace{5mm}
+\begin{center}
+\includegraphics[width=\textwidth]{Self_supervised_Learning_files/ae_paper.png}
+\includegraphics[width=\textwidth]{Self_supervised_Learning_files/vae.png}
+\end{center}
+\footnotemark
+:::
+::::
+\footnotetext{”Variational autoencoder.” Wikipedia, Wikimedia Foundation, en.wikipedia.org/wiki/Variational autoencoder.}
+
+## Autoencoders (1987)
+
+:::: {.columns}
+::: {.column width="47%"}
+\vspace{5mm}
+Pretext task? \textcolor{blue}{Reconstruct Input}
+\
+\
+Downstream task? \textcolor{blue}{Use bottleneck representation}
+\
+\
+
+- Variational Autoencoders (VAE)
+- Denoising Autoencoders (DAE)
+- Contrastive Autoencoders (CAE)
+- Adversarial Autoencoders (AAE)
+- **Masked Autoencoders (MAE)**
+- **Sparse Autoencoders (SAE)**
+:::
+::: {.column width="53%"}
+\vspace{5mm}
+\begin{center}
+\includegraphics[width=\textwidth]{Self_supervised_Learning_files/ae_paper.png}
+\includegraphics[width=\textwidth]{Self_supervised_Learning_files/vae.png}
+\end{center}
+\footnotemark
+:::
+::::
+\footnotetext{”Variational autoencoder.” Wikipedia, Wikimedia Foundation, en.wikipedia.org/wiki/Variational autoencoder.}
+
+## Colorization (2016)
+
+:::: {.columns}
+::: {.column width="47%"}
+\vspace{15mm}
+Pretext task?
+\
+\
+Downstream task?
+\
+\
+\footnotetext{Larsson, Gustav, Michael Maire, and Gregory Shakhnarovich. "Learning representations for automatic colorization." Computer Vision–ECCV 2016: 14th European Conference, Amsterdam, The Netherlands, October 11–14, 2016, Proceedings, Part IV 14. Springer International Publishing, 2016.}
+:::
+::: {.column width="53%"}
+\vspace{5mm}
+\begin{figure}
+\begin{center}
+\includegraphics[width=\textwidth]{Self_supervised_Learning_files/colorization.png}
+\caption{Fully automatic colorization results on ImageNet/ctest10k.}
+\end{center}
+\end{figure}
+:::
+::::
+
+## Colorization (2016)
+
+:::: {.columns}
+::: {.column width="47%"}
+\vspace{15mm}
+Pretext task? \textcolor{blue}{Predicting from grayscale input colorization per pixel}
+\
+\
+Downstream task? \textcolor{blue}{Trained VGG-16 without classification head}
+\
+\
+\footnotetext{Larsson, Gustav, Michael Maire, and Gregory Shakhnarovich. "Learning representations for automatic colorization." Computer Vision–ECCV 2016: 14th European Conference, Amsterdam, The Netherlands, October 11–14, 2016, Proceedings, Part IV 14. Springer International Publishing, 2016.}
+:::
+::: {.column width="53%"}
+\vspace{5mm}
+\begin{figure}
+\begin{center}
+\includegraphics[width=\textwidth]{Self_supervised_Learning_files/colorization.png}
+\caption{Fully automatic colorization results on ImageNet/ctest10k.}
+\end{center}
+\end{figure}
+:::
+::::
+
+## Jigsaw puzzles: Placing image patches in the right place (2016)
+
+:::: {.columns}
+::: {.column width="45%"}
+\vspace{15mm}
+Pretext task?
+\
+\
+Downstream task?
+\
+\
+\
+\footnotetext{Noroozi, Mehdi, and Paolo Favaro. "Unsupervised learning of visual representations by solving jigsaw puzzles." European conference on computer vision. Cham: Springer International Publishing, 2016.}
+:::
+::: {.column width="55%"}
+\vspace{5mm}
+\begin{center}
+\includegraphics[width=\textwidth]{Self_supervised_Learning_files/jigsaw_1.png}
+\includegraphics[width=\textwidth]{Self_supervised_Learning_files/jigsaw_2.png}
+\includegraphics[width=\textwidth]{Self_supervised_Learning_files/jigsaw_3.png}
+\end{center}
+:::
+::::
+
+## Jigsaw puzzles: Placing image patches in the right place (2016)
+
+:::: {.columns}
+::: {.column width="45%"}
+\vspace{15mm}
+Pretext task? \textcolor{blue}{Predicting the position of image patches}
+\
+\
+Downstream task? \textcolor{blue}{"we use the CFN weights to initialize all the conv layers of a standard AlexNet network"}
+\
+\
+\footnotetext{Noroozi, Mehdi, and Paolo Favaro. "Unsupervised learning of visual representations by solving jigsaw puzzles." European conference on computer vision. Cham: Springer International Publishing, 2016.}
+:::
+::: {.column width="55%"}
+\vspace{5mm}
+\begin{center}
+\includegraphics[width=\textwidth]{Self_supervised_Learning_files/jigsaw_1.png}
+\includegraphics[width=\textwidth]{Self_supervised_Learning_files/jigsaw_2.png}
+\includegraphics[width=\textwidth]{Self_supervised_Learning_files/jigsaw_3.png}
+\end{center}
+:::
+::::
+
+## Rotation Prediction (2018)
+
+:::: {.columns}
+::: {.column width="35%"}
+\vspace{8mm}
+Pretext task? \textcolor{blue}{Predicting the rotation of an image: 0, 90, 180, 270 degrees}
+\
+\
+Downstream task?
+
+\textcolor{gray}{"ConvNet model that is trained on the self-supervised task of rotation recognition RotNet model"}
+
+\textcolor{blue}{we learn classifiers on top of the feature maps generated
+by each conv. block of each RotNet model}
+
+:::
+::: {.column width="65%"}
+\vspace{5mm}
+\begin{center}
+\includegraphics[width=\textwidth]{Self_supervised_Learning_files/rotation.png}
+\end{center}
+\footnotetext{Gidaris, Spyros, Praveer Singh, and Nikos Komodakis. "Unsupervised representation learning by predicting image rotations." arXiv preprint arXiv:1803.07728 (2018).}
+:::
+::::
+
+## Is SSL realy so good in transfer learning?
+
+:::: {.columns}
+::: {.column width="50%"}
+\vspace{15mm}
+The ranking is **not** consistent across different methods, **nor** across architectures.
+\
+\
+The answer is: \textcolor{blue}{**it depends!**}
+\
+\
+\footnotetext{Kolesnikov, Alexander, Xiaohua Zhai, and Lucas Beyer. "Revisiting self-supervised visual representation learning." Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. 2019.}
+:::
+::: {.column width="50%"}
+\vspace{5mm}
+\begin{center}
+\includegraphics[width=\textwidth]{Self_supervised_Learning_files/comparison.png}
+\end{center}
+:::
+::::
+
+## Contrastive learning (2015/2020)
+
+Learn representations by **maximizing agreement** between 
+*differently augmented* views of the same image via a contrastive 
+loss in the latent space *z*
+
+:::: {.columns}
+::: {.column width="50%"}
+\vspace{5mm}
+Triplet loss (2015)
+\vspace{5mm}
+\begin{center}
+\includegraphics[width=\textwidth]{Self_supervised_Learning_files/triplet.png}
+\end{center}
+\footnotetext{Schroff, Florian, Dmitry Kalenichenko, and James Philbin. "Facenet: A unified embedding for face recognition and clustering." Proceedings of the IEEE conference on computer vision and pattern recognition. 2015.}
+:::
+::: {.column width="50%"}
+\vspace{5mm}
+Normalized Temperature-scaled Cross Entropy (NT-Xent) Loss (2020)
+\begin{center}
+\includegraphics[width=0.6\textwidth]{Self_supervised_Learning_files/ntxen.png}
+\end{center}
+\footnotetext{Chen, Ting, et al. "A simple framework for contrastive learning of visual representations." International conference on machine learning. PmLR, 2020.}
+:::
+::::
+
+## Contrastive learning (2020)
+
+Learn representations by **maximizing agreement** between 
+*differently augmented* views of the same image via a contrastive 
+loss in the latent space *z*
+
+:::: {.columns}
+::: {.column width="50%"}
+\vspace{3mm}
+Normalized Temperature-scaled Cross Entropy (NT-Xent) Loss (2020)
+\begin{center}
+\includegraphics[width=0.6\textwidth]{Self_supervised_Learning_files/ntxen.png}
+\end{center}
+\footnotetext{Chen, Ting, et al. "A simple framework for contrastive learning of visual representations." International conference on machine learning. PmLR, 2020.}
+:::
+::: {.column width="50%"}
+\vspace{3mm}
+\textcolor{red}{Version v2 in the same year}
+\begin{center}
+\includegraphics[width=\textwidth]{Self_supervised_Learning_files/simclrv2.png}
+\end{center}
+
+\vspace{1mm}
+**Bigger models** and **distillation**
+
+\footnotetext{Chen, Ting, et al. "Big self-supervised models are strong semi-supervised learners." Advances in neural information processing systems 33 (2020): 22243-22255.}
+:::
+::::
+
+----
+
+\begin{center}
+\includegraphics[width=\textwidth]{Self_supervised_Learning_files/simclr_comparison.png}
+\end{center}
+
+## Inpuy Masked Models for text (2019) and images (2021)
+
+Learn representations by **predicting masked parts of the input** or **prediction of the next part of the input**. \textcolor{red}{Transformer architecture!}
+
+:::: {.columns}
+::: {.column width="50%"}
+\vspace{3mm}
+Text (Bert or GPT)
+\begin{center}
+\includegraphics[width=0.95\textwidth]{Self_supervised_Learning_files/bert.png}
+\end{center}
+\footnotetext{Devlin, Jacob, et al. "Bert: Pre-training of deep bidirectional transformers for language understanding." Proceedings of the 2019 conference of the North American chapter of the association for computational linguistics: human language technologies, volume 1 (long and short papers). 2019.}
+:::
+::: {.column width="50%"}
+\vspace{3mm}
+Image (MAE)
+\begin{center}
+\includegraphics[width=0.73\textwidth]{Self_supervised_Learning_files/mae.png}
+\includegraphics[width=0.9\textwidth]{Self_supervised_Learning_files/mae_mask.png}
+\end{center}
+\footnotetext{He, Kaiming, et al. "Masked autoencoders are scalable vision learners." Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. 2022.}
+:::
+::::
+
+## What about now?
+
+:::: {.columns}
+::: {.column width="40%"}
+\vspace{10mm}
+The best SSL models outperform supervision
+\
+\
+No single self-supervised method dominates overall
+\
+\
+SSL induces better classifier calibration
+:::
+::: {.column width="60%"}
+\vspace{5mm}
+\begin{center}
+\includegraphics[width=\textwidth]{Self_supervised_Learning_files/comparison_new.png}
+\end{center}
+:::
+::::
+Finally, self-supervised learning is not only **efficient** but also **effective**!
+\
+\
+\footnotetext{Ericsson, Linus, Henry Gouk, and Timothy M. Hospedales. "How well do self-supervised models transfer?." Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. 2021.}
+
+## Distillation - student and teacher relation (2021)
+:::: {.columns}
+::: {.column width="35%"}
+\vspace{3mm}
+Teacher and student share the same architecture
+\
+\
+"centering prevents one dimension to dominate but encourages collapse to the uniform distribution, while the sharpening has the opposite effect."
+\
+\
+The stop gradient operation is used to **only** update the student model. The teacher model is an **exponential moving average** of the student model.
+:::
+::: {.column width="65%"}
+\begin{center}
+\includegraphics[width=0.57\textwidth]{Self_supervised_Learning_files/dino.png}
+\end{center}
+\footnotetext{Caron, Mathilde, et al. "Emerging properties in self-supervised vision transformers." Proceedings of the IEEE/CVF international conference on computer vision. 2021.}
+:::
+::::
+
+## Distillation - student and teacher relation (2021)
+:::: {.columns}
+::: {.column width="35%"}
+\vspace{3mm}
+Teacher and student share the same architecture
+\
+\
+"centering prevents one dimension to dominate but encourages collapse to the uniform distribution, while the sharpening has the opposite effect."
+\
+\
+The stop gradient operation is used to **only** update the student model. The teacher model is an **exponential moving average** (EMA) of the student model.
+:::
+::: {.column width="65%"}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{Self_supervised_Learning_files/dino_pseudo.png}
+\end{center}
+\footnotetext{Caron, Mathilde, et al. "Emerging properties in self-supervised vision transformers." Proceedings of the IEEE/CVF international conference on computer vision. 2021.}
+:::
+::::
+
+## Current the state of the art model - DINOv2 (2023)
+
+Do we reached the end of the road?
+
+\begin{center}
+\includegraphics[width=0.6\textwidth]{Self_supervised_Learning_files/dinov2.png}
+\end{center}
+
+\footnotetext{Oquab, Maxime, et al. "Dinov2: Learning robust visual features without supervision." arXiv preprint arXiv:2304.07193 (2023).}
+
+## Closing Thoughts
+
+:::: {.columns}
+::: {.column width="52%"}
+\vspace{3mm}
+Representations are downstream *task-dependent*, *architecture-dependent*
+\
+\
+SSL can result in more transferable features than supervised 
+transfer learning
+\
+\
+No single self-supervised method dominates overall
+\
+\
+Almost all current best performing models used models that were pretrained with SSL
+\
+\
+Only big tech companies can afford to train such models from scratch
+:::
+::: {.column width="48%"}
+\begin{center}
+\includegraphics[width=0.53\textwidth]{Self_supervised_Learning_files/chinchila_model.png}
+\includegraphics[width=0.53\textwidth]{Self_supervised_Learning_files/chinchila_data.png}
+\end{center}
+\footnotetext{Hoffmann, Jordan, et al. "Training compute-optimal large language models." arXiv preprint arXiv:2203.15556 (2022).}
+:::
+::::
+For more, read this lecture from the [Lab of HHU Dusseldorf (clickable link)](https://uni-duesseldorf.sciebo.de/s/J5f839uJRKQhW8y).

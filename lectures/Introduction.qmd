@@ -52,9 +52,9 @@ Vladimir Zaigrajew -
 vladimir.zaigrajew.dokt@pw.edu.pl
 
 Tymoteusz Kwieciński -
-tymoteusz.kwiecinski.stud@pw.edu.pl
+tymoteuszkwiecinski@gmail.com
 
-You can find us in Room 303, MINI, *PW*
+You can find us in Room 316, MINI, *PW*
 
 ---
 
@@ -300,6 +300,57 @@ Neural networks learn representations at multiple levels:
 :::
 ::::
 
+---
+:::: {.columns}
+::: {.column width="42%"}
+\scriptsize
+```{python}
+#| echo: true
+#| cache: true
+
+import torch
+
+# Define a simple neural network
+class SimpleNN(torch.nn.Module):
+    def __init__(self):
+        super(SimpleNN, self).__init__()
+        self.fc1 = torch.nn.Linear(10, 5)
+        self.fc2 = torch.nn.Linear(5, 2)
+
+    def forward(self, x):
+        x = torch.relu(self.fc1(x))
+        x = self.fc2(x)
+        return x
+
+# Create a model instance
+model = SimpleNN()
+model = model.to('cpu')
+
+# Example input
+input_data = torch.randn(1, 10)
+
+# Forward pass
+output = model(input_data)
+```
+:::
+::: {.column width="58%"}
+\vspace{25mm}
+\scriptsize
+```{python}
+#| echo: false
+#| cache: false
+# Print input and output shapes
+print(f"Input shape: {input_data.shape}")
+print(f"Input dtype: {input_data.dtype}")
+print(f"Input device: {input_data.device}\n")
+print(f"Output shape: {output.shape}")
+print(f"Output dtype: {output.dtype}")
+print(f"Output device: {output.device}")
+print(f"Output: {output}")
+```
+:::
+::::
+
 ## CNN Representations
 
 CNNs demonstrate hierarchical representation learning
@@ -357,8 +408,10 @@ for key, value in features.items():
 
 :::: {.columns}
 ::: {.column width="32%"}
-\includegraphics[width=0.95\textwidth]{Introduction_files/transformer.png}
-\footnotemark
+\begin{center}
+\includegraphics[width=0.6\textwidth]{Introduction_files/transformer.png}
+\includegraphics[width=0.8\textwidth]{Introduction_files/transformer_2.png}
+\end{center}
 :::
 ::: {.column width="68%"}
 \scriptsize
@@ -385,6 +438,7 @@ print(f"Logits shape: {logits.shape}")
 print(f"After embedder layer: {activations['hook_embed'].shape}")
 print(f"After Layer 11: {block_to_visualize.shape}")
 ```
+\footnotemark
 :::
 ::::
 \footnotetext{Vaswani,Ashish, et al. "Attention is all you need." Advances in neural information processing systems 30 (2017).}
@@ -405,3 +459,5 @@ Key takeaways about representation learning:
    - Self-supervised learning (**Next week**)
    - Multi-modal representations
    - More interpretable representations
+
+For more, read this lecture from the [Lab of HHU Dusseldorf (clickable link)](https://uni-duesseldorf.sciebo.de/s/2h3pY73kHHIWtUW).
