@@ -46,3 +46,5 @@ htmlcov/
 ._*
 .Spotlight-V100
 .Trashes
+
+data/

@@ -52,8 +52,8 @@ The course will be divided into three main parts:
 Here we will cover the basics of representation learning with topics such as self-supervised learning, contrastive learning, masked-based representation and interpretable representation learning. I will focus on foundations and various state-of-the-art methods in the field.
 
 ## Week 1: Introduction to Representation Learning
-- Group 2: Wednesday, 2025-02-26
-- Group 3: Tuesday, 2025-02-25
+- Group 2: Wednesday, 2025-03-05
+- Group 3: Tuesday, 2025-03-04
 - [PDF](lectures/Introduction.pdf) || [Markdown](lectures/Introduction.qmd)
 - Get to know the course
 - Talk about the projects
@@ -68,33 +68,39 @@ Here we will cover the basics of representation learning with topics such as sel
   - For people who are familiar with Deep Learning, I recommend watching lectures from my AI celebrity crush Andrey Karpathy. He served as Director of AI at Tesla, was a researcher at OpenAI, and completed his PhD under Fei-Fei Li at Stanford University, where he created CS231n, a brilliant deep learning for computer vision course that I highly recommend. Here is the link to his [YouTube channel](https://www.youtube.com/@AndrejKarpathy).
 
 ## Week 2: Self-supervised Learning
-- Group 2: Wednesday, 2025-03-05
-- Group 3: Tuesday, 2025-03-04
+- Group 2: Wednesday, 2025-03-12
+- Group 3: Tuesday, 2025-03-11
 - [PDF](lectures/Self_supervised_Learning.pdf) || [Markdown](lectures/Self_supervised_Learning.qmd)
-- TODO
+- Unlabeled data -> Creating Y from X using pretext task -> Training a model on Y -> Transfer Learning or Downstream task finetuning
+- Pretext tasks covered: Colorization, Jigsaw puzzles, Classify corrupted images, Rotation Prediction
+- The most popular pretext tasks from 2020:
+  - Autoencoders: Creating bottleneck representation of the data from which we can recover the original data (VAE, SAE)
+  - Contrastive Learning: Learning representations by contrasting positive and negative pairs (SimCLR, MoCo)
+  - Masked-based Representation Learning: Learning representations by masking parts of the data and predicting them (BERT, MAE)
+  - Distillation: Learning representations by training a student model to mimic the behavior of a teacher model (DINO, DINOv2)
+- Most students know how to create reproducible code with seeding and use the GPU in Google Colab.
 
 **Exercise**:
-
 Let's get familiar with the tools we will be using for the project: [PyTorch](https://pytorch.org/). Pytorch is a free and open-source machine learning library which is now renowned as the best library for Deep Learning so we also will use it. I recommend analyzing the tutorial from the [official website](https://pytorch.org/tutorials/beginner/pytorch_with_examples.html) but it is not mandatory. What I want is to take the code from this [tutorial](https://pytorch.org/tutorials/beginner/transfer_learning_tutorial.html) and reproduce it on your own in Google Colab. I highly recommend commenting or explaining in markdown each section of the code so you will understand it better, and if you are not sure about something or you don't understand it, I will write a comment on it and explain it to you. The completed and compiled code (notebook) you will send me a link to it on Slack. If everything will be ok, I will give you **1** point for it.
 
 
-## Week 3: Contrastive Learning
-- Group 2: Wednesday, 2025-03-12
-- Group 3: Tuesday, 2025-03-11
-- [PDF]() || [Markdown]()
-- TODO
-- References:
-  - TODO
-
-## Week 4: Masked-based Representation Learning
+## Week 3: Contrastive Learning and Masked-based Representation Learning
 - Group 2: Wednesday, 2025-03-19
 - Group 3: Tuesday, 2025-03-18
 - [PDF]() || [Markdown]()
 - TODO
-- References:
-  - TODO
 
-## Week 5: Exploring Self-supervised Learned Representations 
+**Exercise**:
+
+Let's train our first SSL model and compare it against the supervised one. In the provided [notebook](exercise/week_3.ipynb), you will find code for the task. Your goal is to fill in the `CODE HERE` sections and run the code. The task is to train a model on the rotation task in an SSL way and compare it with the supervised model. In this task, we will use the `GTSRB` dataset which already comes with labels, but we will split the dataset and assume that one part doesn't have labels. You will train the model on the unlabeled part with a rotation task and then compare how it performs on the labeled part. You will compare the results with: the supervised model trained on the labeled part only, the SSL model as a feature extractor for a classifier trained on the labeled part, and the SSL model fully fine-tuned on the labeled part. At the end, I expect you to answer the questions in the notebook and do the task it asks you to do. In the previous task, you used Google Colab, so let's use it again with GPU acceleration (don't waste time on CPU). After you finish the task, please send me a link to your notebook on Slack. If everything is satisfactory, I will give you **1** point for it.
+
+<span style="color:red">Additional Exercise </span>
+
+In Week 2's lecture, I introduced you to DINO and DINOv2 SSL methods but didn't explain them in detail (as they're complex and would require more than just 10 minutes). Your task, worth **2** points, is to read the paper [DINO](https://arxiv.org/abs/2104.14294) and explain to me via Slack private chat how it works. You don't need to read the entire paper thoroughly - I just want to verify that you fully understand how the model was trained (pretext task, downstream task, etc.). 
+
+If your explanation is comprehensive, you'll earn the full **2** points. If your explanation lacks certain elements, I'll ask follow-up questions which you should try to answer. In this exercise, I'll take the role of the student and you'll be the teacher. If you teach me how DINO works I will give you **2** points, but if you fail to explain it, I won't give you any points (Don't worry, I'll try to help you get the points).
+
+## Week 4: Exploring Self-supervised Learned Representations 
 - Group 2: Wednesday, 2025-03-26
 - Group 3: Tuesday, 2025-03-25
 - [PDF]() || [Markdown]()
@@ -102,7 +108,7 @@ Let's get familiar with the tools we will be using for the project: [PyTorch](ht
 - References:
   - TODO
 
-## Week 6: Interpretable Representation Learning 
+## Week 5: Interpretable Representation Learning 
 - Group 2: Wednesday, 2025-04-02
 - Group 3: Tuesday, 2025-04-01
 - [PDF]() || [Markdown]()
