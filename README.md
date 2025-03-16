@@ -87,8 +87,8 @@ Let's get familiar with the tools we will be using for the project: [PyTorch](ht
 ## Week 3: Contrastive Learning and Masked-based Representation Learning
 - Group 2: Wednesday, 2025-03-19
 - Group 3: Tuesday, 2025-03-18
-- [PDF]() || [Markdown]()
-- TODO
+- [PDF](lecutes/Contrastive_and_mask.pdf) || [Markdown](lectures/Contrastive_and_mask.qmd)
+- Inspired by Lab of HHU Dusseldorf [week 4](https://github.com/HHU-MMBS/RepresentationLearning_SS2023/tree/main?tab=readme-ov-file#week-4---contrastive-learning-simclr-and-mutual-information-based-proof) and [week 8](https://github.com/HHU-MMBS/RepresentationLearning_SS2023/tree/main?tab=readme-ov-file#week-8---masked-based-visual-representation-learning-mae-beit-ibot-dinov2)
 
 **Exercise**:
 

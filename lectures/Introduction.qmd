@@ -4,7 +4,7 @@ subtitle: "Representation Learning"
 author: "Vladimir Zaigrajew"
 jupyter: warsztat_badacza
 engine: jupyter
-date: "2025-02-26"
+date: "2025-03-05"
 execute:
   eval: true
 format:

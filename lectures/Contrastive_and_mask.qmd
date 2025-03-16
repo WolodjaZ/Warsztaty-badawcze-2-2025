@@ -1,0 +1,703 @@
+---
+title: "Contrastive and Masked Representation Learning"
+subtitle: "Representation Learning"
+author: "Vladimir Zaigrajew"
+jupyter: warsztat_badacza
+engine: jupyter
+date: "2025-03-19"
+execute:
+  eval: true
+format:
+  beamer:
+    theme: Warsaw
+    fig-cap: false
+    colortheme: whale
+    fonttheme: serif
+    navigation: horizontal
+    aspectratio: 169
+    header-includes: |
+      \usepackage{subcaption}
+      \titlegraphic{\includegraphics[width=0.2\textwidth]{images/mini.png}}
+      \definecolor{unidarkblue}{RGB}{0,60,113}
+      \definecolor{unilightblue}{RGB}{0,90,169}
+      \setbeamercolor{structure}{fg=unidarkblue}
+      \setbeamerfont{title}{size=\Large,series=\bfseries}
+      \setbeamerfont{frametitle}{size=\large,series=\bfseries}
+      \setbeamertemplate{navigation symbols}{}
+      \setbeamertemplate{footline}{
+        \leavevmode
+        \hbox{
+          \begin{beamercolorbox}[wd=.85\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3em,rightskip=.3em]{structure}
+            \footnotesize{Warsztaty badawcze 2 -- Introduction to Representation Learning -- MINI PW -- 2025}
+          \end{beamercolorbox}
+          \begin{beamercolorbox}[wd=.15\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3em,rightskip=.3em plus 1fil,center]{structure}
+            \footnotesize{\insertframenumber\,/\,\inserttotalframenumber}
+          \end{beamercolorbox}
+        }
+      }
+    code-block-bg: "#f2f2f2"
+    code-block-border-left: "#31BAE9"
+    highlight-style: github
+    fig-width: 8
+    fig-height: 5
+    fig-align: center
+    slide-level: 2
+    incremental: false
+    number-sections: true
+    toc: false
+---
+
+## Introduction to Representation Learning
+Vladimir Zaigrajew -
+vladimir.zaigrajew.dokt@pw.edu.pl
+
+Tymoteusz Kwieciński -
+tymoteuszkwiecinski@gmail.com
+
+You can find us in Room 316, MINI, *PW*
+
+---
+
+Remember every information you can find on our Github Repo:
+
+:::: {.columns}
+::: {.column width="50%"}
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.6\textwidth]{images/repo_qr.png}
+\caption{QR code to course Github Repo}
+\end{center}
+\end{figure}
+:::
+::: {.column width="50%"}
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.6\textwidth]{images/my_qr.png}
+\caption{QR code to our Github Repo}
+\end{center}
+\end{figure}
+:::
+::::
+
+## Recap from last lecture
+
+- Self-supervised learning (SSL) is a subfield of representation learning, where model training is done without human-annotated labels.
+- SSL process consists of four stages:
+  - Unlabeled data collection (X) - Just scrape the web
+  - Pretext task definition - Define a task that can be solved using the unlabeled data, for example, next word prediction.
+  - Model training - Train the model using the defined pretext tasks. So best on the pretext task create labels for the data and train the model on it.
+  - Evaluation - Evaluate the model's performance on specific downstream tasks or transfer learning.
+- Before 2020 the techniques were not very effective, but after 2020 the results started to be very good.
+- The best SSL models started to outperform the best supervised models.
+- No single self-supervised method dominates overall, because SSL models are downstream *task-dependent*, *architecture-dependent*.
+- Almost all current best performing models used models that were pretrained with SSL.
+
+## Contrastive Learning - Theory
+
+:::: {.columns}
+::: {.column width="50%"}
+\vspace{3mm}
+Contrastive Learning mimics the way humans learn.
+\
+\
+Humans *can* learn just by looking at one image to understand it. But we often **prefer** to learn by comparing images. 
+\
+\
+We understand concepts better when we see what they are and what they aren't.
+\
+\
+For example: When we see a cat, we can understand what a cat is by comparing it to a dog. We can see the differences and similarities between the two animals.
+:::
+::: {.column width="50%"}
+\begin{figure}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Contrastive_and_mask_files/contrastive_example.png}
+\end{center}
+\end{figure}
+\footnotetext{\url{https://www.v7labs.com/blog/contrastive-learning-guide}}
+:::
+::::
+---
+:::: {.columns}
+::: {.column width="70%"}
+\begin{figure}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Contrastive_and_mask_files/contrastive_example_vis.png}
+\end{center}
+\end{figure}
+:::
+::: {.column width="30%"}
+\url{https://www.v7labs.com/blog/contrastive-learning-guide}
+:::
+::::
+## Contrastive Learning - How to compare?
+\vspace{3mm}
+:::: {.columns}
+::: {.column width="50%"}
+**Positive Pairs Only**
+\
+\
+Use the same image but with different augmentations and train the model to learn the same representation for both images.
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.68\textwidth]{Contrastive_and_mask_files/byol_example.png}
+\end{center}
+\end{figure}
+\footnotetext{Grill, Jean-Bastien, et al. "Bootstrap your own latent-a new approach to self-supervised learning." Advances in neural information processing systems 33 (2020): 21271-21284.}
+:::
+::: {.column width="50%"}
+**Instance Discrimination**
+\
+\
+We modify the input data to create two different views of the same image. This allows the model to learn invariant features by contrasting positive pairs against negative pairs (other images).
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.68\textwidth]{Contrastive_and_mask_files/instance.png}
+\end{center}
+\end{figure}
+\footnotetext{\url{https://www.v7labs.com/blog/contrastive-learning-guide}}
+:::
+::::
+
+## Instance Discrimination
+
+:::: {.columns}
+::: {.column width="50%"}
+\vspace{5mm}
+Triplet loss (2015)
+\vspace{5mm}
+\begin{center}
+\includegraphics[width=\textwidth]{Self_supervised_Learning_files/triplet.png}
+\end{center}
+\footnotetext{Schroff, Florian, Dmitry Kalenichenko, and James Philbin. "Facenet: A unified embedding for face recognition and clustering." Proceedings of the IEEE conference on computer vision and pattern recognition. 2015.}
+:::
+::: {.column width="50%"}
+\vspace{5mm}
+Normalized Temperature-scaled Cross Entropy (NT-Xent) Loss (2020)
+\begin{center}
+\includegraphics[width=0.6\textwidth]{Self_supervised_Learning_files/ntxen.png}
+\end{center}
+\footnotetext{Chen, Ting, et al. "A simple framework for contrastive learning of visual representations." International conference on machine learning. PmLR, 2020.}
+:::
+::::
+
+## Instance Discrimination - SimCLR (2020) nad SimCLRv2 (2020)
+
+:::: {.columns}
+::: {.column width="40%"}
+\vspace{5mm}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Self_supervised_Learning_files/ntxen.png}
+\end{center}
+\
+How many classes do we have?
+
+How many positive pairs do we have?
+
+How many negative pairs do we have?
+:::
+::: {.column width="60%"}
+\vspace{5mm}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Contrastive_and_mask_files/simclr_view.png}
+\end{center}
+\
+\
+Normalized Temperature-scaled Cross Entropy (NT-Xent) Loss
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Contrastive_and_mask_files/loss_simclr.png}
+\end{center}
+:::
+::::
+
+## L2 normalization and Temperature scaling
+:::: {.columns}
+::: {.column width="73%"}
+\vspace{2mm}
+Restricting the output space to the unit hypersphere (unit length)
+\
+\
+The softmax distribution → arbitrarily sharp
+\
+\
+Ignore magnitude, focus on direction (angle) 
+between vectors.
+\
+\
+The temperature parameter $\tau$ controls the sharpness of the distribution. low values create high-contrast representations where differences are amplified, while high values create more nuanced, graduated similarity relationships.
+\
+\
+$\tau=0.07$ this value is empirically chosen. This value indicate that we want to penalize the model even for slightly dissimilar items (same cats)
+:::
+::: {.column width="27%"}
+\begin{figure}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Contrastive_and_mask_files/sphere.png}
+\end{center}
+\end{figure}
+\begin{figure}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Contrastive_and_mask_files/temperature.png}
+\end{center}
+\end{figure}
+:::
+::::
+
+## Problems in SSL and Contrastive Learning
+
+Mode collapse: There are scenarios where the model may fail to capture the diversity of the data, collapsing to nearly identical representations Solutions: Stronger augmentations, better negative sampling, regularization techniques
+\
+\
+Representation Collapse: The model may learn to ignore the input data and produce similar representations for all inputs. Particularly problematic in methods without negative samples.
+\
+\
+Negative Sampling Issues: The choice of negative samples can significantly impact the performance of contrastive learning methods. Poorly chosen negatives can lead to suboptimal representations. Additionally, the number of negatives can be computationally expensive as we need many negative samples for effective learning.
+\
+\
+The Cold-Start Problem: Initial representations are poor, making similarity judgments unreliable. Solutions: Larger Batch Sizes, Curriculum Learning, Temperature Scheduling, Leveraging domain knowledge to bootstrap the training.
+
+## Properties of contrastive learning
+\begin{figure}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Contrastive_and_mask_files/properties.png}
+\end{center}
+\end{figure}
+\footnotetext{Wang, Tongzhou, and Phillip Isola. "Understanding contrastive representation learning through alignment and uniformity on the hypersphere." International conference on machine learning. PMLR, 2020.}
+
+## Properties of contrastive learning - empirical study
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.9\textwidth]{Contrastive_and_mask_files/properties_empi.png}
+\end{center}
+\end{figure}
+\footnotetext{Wang, Tongzhou, and Phillip Isola. "Understanding contrastive representation learning through alignment and uniformity on the hypersphere." International conference on machine learning. PMLR, 2020.}
+## Memory Banks (CVPR, 2018) - solution to negative sampling issue
+The same loss as in SimCLR
+\
+\
+\begin{figure}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Contrastive_and_mask_files/memory_bank.png}
+\end{center}
+\end{figure}
+\footnotetext{Wu, Zhirong, et al. "Unsupervised feature learning via non-parametric instance discrimination." Proceedings of the IEEE conference on computer vision and pattern recognition. 2018.}
+## MoCo (CVPR, 2020) and MoCov2 (2020)
+:::: {.columns}
+::: {.column width="60%"}
+\vspace{5mm}
+Added momentum encoder to the memory bank
+\
+\
+> "We hypothesize that such failure is caused by the rapidly changing encoder that reduces the key representations’ consistency. We propose an EMA to address this issue. Shortly, encoder embbedings changes faster than the memory bank embeddings."
+\
+\
+v2 stronger augmentations and  MLP projection head borrowed from SimCLR
+\footnotetext{He, Kaiming, et al. "Momentum contrast for unsupervised visual representation learning." Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. 2020.}
+:::
+::: {.column width="40%"}
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.9\textwidth]{Contrastive_and_mask_files/moco.png}
+\end{center}
+\end{figure}
+\begin{figure}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Contrastive_and_mask_files/moco_loss.png}
+\end{center}
+\end{figure}
+\footnotetext{Chen, Xinlei, et al. "Improved baselines with momentum contrastive learning." arXiv preprint arXiv:2003.04297 (2020).}
+:::
+::::
+---
+:::: {.columns}
+::: {.column width="40%"}
+\vspace{10mm}
+MoCO pseudo code
+\
+\
+Queue length 65K
+
+Momentum 0.999
+
+T=0.07
+\footnotetext{He, Kaiming, et al. "Momentum contrast for unsupervised visual representation learning." Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. 2020.}
+\footnotetext{Chen, Xinlei, et al. "Improved baselines with momentum contrastive learning." arXiv preprint arXiv:2003.04297 (2020).}
+:::
+::: {.column width="60%"}
+\begin{figure}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Contrastive_and_mask_files/moco_code.png}
+\end{center}
+\end{figure}
+:::
+::::
+## MoCov3 (CVPR, 2021)
+:::: {.columns}
+::: {.column width="40%"}
+\vspace{5mm}
+Redesigned for Vision Transformers
+\
+\
+Symmetric contrastive loss
+\
+\
+Extra projection head
+\
+\
+"We abandon the memory queue, when the batch is sufficiently large” (4096)
+\footnotetext{Chen, Xinlei, Saining Xie, and Kaiming He. "An empirical study of training self-supervised vision transformers." Proceedings of the IEEE/CVF international conference on computer vision. 2021.}
+:::
+::: {.column width="60%"}
+\begin{figure}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Contrastive_and_mask_files/mocov3_code.png}
+\end{center}
+\end{figure}
+:::
+::::
+## NNCLR (CVPR, 2021)
+<!-- \vspace{5mm}
+SimCLR derivative
+\
+\
+Use nearest neighbors from view 1 as positive pairs for view 2
+\
+\
+Don't redisigne the model, just try to improve the flaws of the approach
+\
+\ -->
+Don't redesign the model, just try to correct the flaws in this approach.\begin{figure}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Contrastive_and_mask_files/nnclr.png}
+\end{center}
+\end{figure}
+\footnotetext{Dwibedi, Debidatta, et al. "With a little help from my friends: Nearest-neighbor contrastive learning of visual representations." Proceedings of the IEEE/CVF international conference on computer vision. 2021.}
+## SwAV - Clustering on Positive Pairs
+The most representative method among the clustering-based architectures.
+\
+\
+Uses the prototypes (C) to cache the center features for clusters.
+
+Codes (Q) represent the extracted feature $z$ by the similarities to each cluster (Solution for mode collapse with Sinkhorn-Knopp algorithm).
+
+**Considers only positive pairs in loss functions**
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.7\textwidth]{Contrastive_and_mask_files/swav.png}
+\end{center}
+\end{figure}
+\footnotetext{Caron, Mathilde, et al. "Unsupervised learning of visual features by contrasting cluster assignments." Advances in neural information processing systems 33 (2020): 9912-9924.}
+## CLIP (ICML, 2021) - the most used contrastive learning model
+Contrastive learning is **not** limited to visual inputs.
+
+The most cited contrastive learning method: **30688**.
+
+:::: {.columns}
+::: {.column width="50%"}
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.9\textwidth]{Contrastive_and_mask_files/clip.png}
+\end{center}
+\end{figure}
+\footnotetext{Radford, Alec, et al. "Learning transferable visual models from natural language supervision." International conference on machine learning. PmLR, 2021.}
+:::
+::: {.column width="50%"}
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.88\textwidth]{Contrastive_and_mask_files/clip_code.png}
+\end{center}
+\end{figure}
+:::
+::::
+## The Results of Contrastive Learning
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.7\textwidth]{Contrastive_and_mask_files/result_cl.png}
+\end{center}
+\end{figure}
+\footnotetext{Jaiswal, Ashish, et al. "A survey on contrastive self-supervised learning." Technologies 9.1 (2020): 2.}
+## Masking SSL Theory
+
+Core insight: Learning robust representations by predicting what's missing
+
+Masking imposes structured information bottleneck
+\begin{itemize}
+\item Forces model to infer relationships between visible/hidden regions
+\item Prevents trivial solutions and shortcut learning
+\end{itemize}
+
+**No negative** samples required (unlike contrastive methods)
+
+Human cognition routinely completes patterns from partial information
+\
+\
+
+:::: {.columns}
+::: {.column width="78%"}
+\
+"The dog chased the [MASK] up a tree."
+
+"The dog chased the cat up a tree."
+\
+\
+"Students attend [MASK] to gain knowledge and understanding."
+
+"Students attend lectures to gain knowledge and understanding."
+:::
+::: {.column width="22%"}
+\begin{figure}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Contrastive_and_mask_files/masked_image.jpg}
+\end{center}
+\end{figure}
+:::
+::::
+## Masked Models for text (2019) and images (2021)
+:::: {.columns}
+::: {.column width="50%"}
+\vspace{3mm}
+Text (Bert or GPT)
+\begin{center}
+\includegraphics[width=0.95\textwidth]{Self_supervised_Learning_files/bert.png}
+\end{center}
+\footnotetext{Devlin, Jacob, et al. "Bert: Pre-training of deep bidirectional transformers for language understanding." Proceedings of the 2019 conference of the North American chapter of the association for computational linguistics: human language technologies, volume 1 (long and short papers). 2019.}
+:::
+::: {.column width="50%"}
+\vspace{3mm}
+Image (MAE)
+\begin{center}
+\includegraphics[width=0.73\textwidth]{Self_supervised_Learning_files/mae.png}
+\includegraphics[width=0.9\textwidth]{Self_supervised_Learning_files/mae_mask.png}
+\end{center}
+\footnotetext{He, Kaiming, et al. "Masked autoencoders are scalable vision learners." Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. 2022.}
+:::
+::::
+
+## BERT (2019) - Masked Language Model (MLM)
+First major application of masking in language models: **126150 citations**
+\
+\
+
+:::: {.columns}
+::: {.column width="65%"}
+Uses bidirectional context.
+\
+\
+Randomly mask 15% of input tokens:
+\begin{itemize}
+\item 80\% replace with [MASK]
+\item 10\% replace with random token
+\item 10\% keep original token
+\item Prevents model from just memorizing masks
+\end{itemize}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Contrastive_and_mask_files/bert_results.png}
+\end{center}
+\end{figure}
+:::
+::: {.column width="35%"}
+\begin{figure}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Contrastive_and_mask_files/bert_losses.png}
+\end{center}
+\end{figure}
+:::
+::::
+\footnotetext{Devlin, Jacob, et al. "Bert: Pre-training of deep bidirectional transformers for language understanding." Proceedings of the 2019 conference of the North American chapter of the association for computational linguistics: human language technologies, volume 1 (long and short papers). 2019.}
+## BERT (2019) - Legacy
+\begin{itemize}
+\item RoBERTa (Liu et al., 2019) - citations: 18311
+  \begin{itemize}
+  \item Removed Next Sentence Prediction task
+  \end{itemize}
+\item ALBERT (Lan et al., 2019) - citations: 8456
+  \begin{itemize}
+  \item Parameter sharing across layers (85\% fewer parameters)
+  \item Sentence-Order Prediction replacing Next Sentence Prediction
+  \end{itemize}
+\item ELECTRA (Clark et al., 2020) - citations: 4690
+  \begin{itemize}
+  \item Add discriminator to predict replaced tokens (GAN-style)
+  \end{itemize}
+\item SpanBERT (Joshi et al., 2020) - citations: 2339
+  \begin{itemize}
+  \item Masks contiguous spans rather than random tokens
+  \end{itemize}
+\item BART (Lewis et al., 2020) - citations: 12191
+  \begin{itemize}
+  \item Encoder-Decoder Transformer (Combines BERT and GPT)
+  \item Encoder Processes corrupted text and decoder predict original tokens
+  \end{itemize}
+\end{itemize}
+## GPT3 (2020) - Generative Pre-trained Transformer 3
+The last SSL trained open source GPT model: **41905 citations**
+
+:::: {.columns}
+::: {.column width="70%"}
+Decoder-only transformer (no encoder component)
+\
+\
+Autoregressive language modeling (predicts next token)
+\
+\
+175 billion parameters (10x larger than previous models)
+\
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.5\textwidth]{Contrastive_and_mask_files/gpt.png}
+\end{center}
+\end{figure}
+\footnotetext{Brown, Tom, et al. "Language models are few-shot learners." Advances in neural information processing systems 33 (2020): 1877-1901.}
+:::
+::: {.column width="30%"}
+\begin{figure}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Contrastive_and_mask_files/transformer.png}
+\end{center}
+\end{figure}
+:::
+::::
+
+## MAE (CVPR, 2022) - Masked Autoencoder with 9024 citations
+
+:::: {.columns}
+::: {.column width="58%"}
+\begin{figure}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Self_supervised_Learning_files/mae.png}
+\end{center}
+\end{figure}
+\begin{figure}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Self_supervised_Learning_files/mae_mask.png}
+\end{center}
+\end{figure}
+:::
+::: {.column width="42%"}
+\begin{figure}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Contrastive_and_mask_files/mae_mask_result.png}
+\end{center}
+\end{figure}
+\begin{figure}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Contrastive_and_mask_files/mae_result.png}
+\end{center}
+\end{figure}
+:::
+::::
+\footnotetext{He, Kaiming, et al. "Masked autoencoders are scalable vision learners." Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. 2022.}
+## MAE - What is the optimal masking ratio?
+
+:::: {.columns}
+::: {.column width="30%"}
+\vspace{15mm}
+Intuition: Vision-based signals are more redundant than natural language (~15% masking ratio)
+:::
+::: {.column width="70%"}
+\begin{figure}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Contrastive_and_mask_files/masking.png}
+\end{center}
+\end{figure}
+:::
+::::
+\footnotetext{He, Kaiming, et al. "Masked autoencoders are scalable vision learners." Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. 2022.}
+## BEiT (ICLR, 2022) - BERT-style pre-training in vision
+
+:::: {.columns}
+::: {.column width="27%"}
+Randomly mask some patches and replace them with token[M].
+\
+\
+"tokenize" the image to discrete visual tokens latent codes of dVAE (Discrete Variational Autoencoder)
+\
+\
+Pretext task: predicting the visual tokens of the original image based on the corrupted image.
+:::
+::: {.column width="73%"}
+\begin{figure}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Contrastive_and_mask_files/beit.png}
+\end{center}
+\end{figure}
+\footnotetext{Bao, Hangbo, et al. "Beit: Bert pre-training of image transformers." arXiv preprint arXiv:2106.08254 (2021).}
+:::
+::::
+## BEiT (ICLR, 2022) - legacy
+\begin{itemize}
+ \item BEit v2 (ICLR,2023):
+    \begin{itemize}
+        \item Replaces dVAE with knowledge distillation from teacher model
+        \item Uses "soft" visual tokens instead of discrete ones
+    \end{itemize}
+ \item BEiT v3 (CVPR,2023):
+    \begin{itemize}
+        \item Multiway transformer architecture for both images and text
+        \item Joint vision-language masking objectives
+    \end{itemize}
+\end{itemize}
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.55\textwidth]{Contrastive_and_mask_files/beitv2.png}
+\end{center}
+\end{figure}
+## iBOT (ICLR, 2022) - Combining MIM with DINO
+:::: {.columns}
+::: {.column width="50%"}
+Image-level: CLS token obtained from different views of the same image.
+\
+\
+MIM: CE(masked_student, teacher_unmasked) of the **same view**
+:::
+::: {.column width="50%"}
+\begin{figure}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Contrastive_and_mask_files/ibot_image.png}
+\end{center}
+\end{figure}
+\begin{figure}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Contrastive_and_mask_files/ibot_loss.png}
+\end{center}
+\end{figure}
+:::
+::::
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.9\textwidth]{Contrastive_and_mask_files/ibot.png}
+\end{center}
+\end{figure}
+\footnotetext{Zhou, Jinghao, et al. "ibot: Image bert pre-training with online tokenizer." arXiv preprint arXiv:2111.07832 (2021).}
+## BYOL (NeurIPS, 2020) - Cherry on the cake
+:::: {.columns}
+::: {.column width="42%"}
+No negative pairs, No large batch size dependency, No memory bank
+\
+\
+Computational efficiency during training
+\
+\
+Asymmetric architecture with predictor
+\
+\
+Strong empirical results
+\
+\
+Requires careful architectural design to avoid collapse (batch normalization)
+\
+\
+Sensitive to hyperparameters
+:::
+::: {.column width="58%"}
+\vspace{10mm}
+\begin{figure}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Contrastive_and_mask_files/byol.png}
+\end{center}
+\end{figure}
+\footnotetext{Grill, Jean-Bastien, et al. "Bootstrap your own latent-a new approach to self-supervised learning." Advances in neural information processing systems 33 (2020): 21271-21284.}
+:::
+::::

@@ -1,10 +1,10 @@
 ---
-title: "Introduction"
+title: "Self-supervised Learning"
 subtitle: "Representation Learning"
 author: "Vladimir Zaigrajew"
 jupyter: warsztat_badacza
 engine: jupyter
-date: "2025-02-26"
+date: "2025-03-12"
 execute:
   eval: true
 format:
@@ -434,7 +434,7 @@ Normalized Temperature-scaled Cross Entropy (NT-Xent) Loss (2020)
 \includegraphics[width=\textwidth]{Self_supervised_Learning_files/simclr_comparison.png}
 \end{center}
 
-## Inpuy Masked Models for text (2019) and images (2021)
+## Input Masked Models for text (2019) and images (2021)
 
 Learn representations by **predicting masked parts of the input** or **prediction of the next part of the input**. \textcolor{red}{Transformer architecture!}
 
