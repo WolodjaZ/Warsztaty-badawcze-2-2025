@@ -85,12 +85,12 @@ Remember every information you can find on our Github Repo:
 - SSL process consists of four stages:
   - Unlabeled data collection (X) - Just scrape the web
   - Pretext task definition - Define a task that can be solved using the unlabeled data, for example, next word prediction.
-  - Model training - Train the model using the defined pretext tasks. So best on the pretext task create labels for the data and train the model on it.
+  - Model training - Train the model using the defined pretext tasks. Using the pretext task, create labels for the data and train the model on them.
   - Evaluation - Evaluate the model's performance on specific downstream tasks or transfer learning.
-- Before 2020 the techniques were not very effective, but after 2020 the results started to be very good.
+- Before 2020 the techniques were not very effective, but starting from 2020 the results started to be very good.
 - The best SSL models started to outperform the best supervised models.
-- No single self-supervised method dominates overall, because SSL models are downstream *task-dependent*, *architecture-dependent*.
-- Almost all current best performing models used models that were pretrained with SSL.
+- No single self-supervised method dominates overall, because models are downstream *task-dependent*, *architecture-dependent*.
+- Almost all current best performing models are finetuned versions of models pretrained with SSL.
 
 ## Contrastive Learning - Theory
 
@@ -127,6 +127,7 @@ For example: When we see a cat, we can understand what a cat is by comparing it 
 \end{figure}
 :::
 ::: {.column width="30%"}
+\vspace{15mm}
 \url{https://www.v7labs.com/blog/contrastive-learning-guide}
 :::
 ::::
@@ -217,11 +218,11 @@ Normalized Temperature-scaled Cross Entropy (NT-Xent) Loss
 Restricting the output space to the unit hypersphere (unit length)
 \
 \
-The softmax distribution → arbitrarily sharp
-\
-\
 Ignore magnitude, focus on direction (angle) 
 between vectors.
+\
+\
+The softmax distribution → arbitrarily sharp
 \
 \
 The temperature parameter $\tau$ controls the sharpness of the distribution. low values create high-contrast representations where differences are amplified, while high values create more nuanced, graduated similarity relationships.
@@ -245,7 +246,7 @@ $\tau=0.07$ this value is empirically chosen. This value indicate that we want t
 
 ## Problems in SSL and Contrastive Learning
 
-Mode collapse: There are scenarios where the model may fail to capture the diversity of the data, collapsing to nearly identical representations Solutions: Stronger augmentations, better negative sampling, regularization techniques
+Mode collapse: There are scenarios where the model may fail to capture the diversity of the data, collapsing to nearly identical representations. Solutions: Stronger augmentations, better negative sampling, regularization techniques
 \
 \
 Representation Collapse: The model may learn to ignore the input data and produce similar representations for all inputs. Particularly problematic in methods without negative samples.
@@ -366,7 +367,8 @@ Use nearest neighbors from view 1 as positive pairs for view 2
 Don't redisigne the model, just try to improve the flaws of the approach
 \
 \ -->
-Don't redesign the model, just try to correct the flaws in this approach.\begin{figure}
+Don't redesign the model, just try to correct the flaws in it approach.
+\begin{figure}
 \begin{center}
 \includegraphics[width=1.0\textwidth]{Contrastive_and_mask_files/nnclr.png}
 \end{center}
@@ -374,11 +376,13 @@ Don't redesign the model, just try to correct the flaws in this approach.\begin{
 \footnotetext{Dwibedi, Debidatta, et al. "With a little help from my friends: Nearest-neighbor contrastive learning of visual representations." Proceedings of the IEEE/CVF international conference on computer vision. 2021.}
 ## SwAV - Clustering on Positive Pairs
 The most representative method among the clustering-based architectures.
-\
-\
-Uses the prototypes (C) to cache the center features for clusters.
 
-Codes (Q) represent the extracted feature $z$ by the similarities to each cluster (Solution for mode collapse with Sinkhorn-Knopp algorithm).
+The SwAV approach uses two key components to prevent mode collapse:
+\begin{itemize}
+\item Prototypes (C): These serve as cached center features for clusters, providing stable reference points
+\item Codes (Q): These represent the extracted features (z) through their similarities to each cluster
+\item The Sinkhorn-Knopp algorithm is applied to the codes to ensure proper distribution across clusters
+\end{itemize}
 
 **Considers only positive pairs in loss functions**
 \begin{figure}
@@ -417,23 +421,19 @@ The most cited contrastive learning method: **30688**.
 \end{figure}
 \footnotetext{Jaiswal, Ashish, et al. "A survey on contrastive self-supervised learning." Technologies 9.1 (2020): 2.}
 ## Masking SSL Theory
-
 Core insight: Learning robust representations by predicting what's missing
 
-Masking imposes structured information bottleneck
+Masking imposes structured information bottleneck:
 \begin{itemize}
 \item Forces model to infer relationships between visible/hidden regions
 \item Prevents trivial solutions and shortcut learning
+\item Requires no negative samples (unlike contrastive methods)
+\item Mimics how human cognition routinely completes patterns from partial information
 \end{itemize}
-
-**No negative** samples required (unlike contrastive methods)
-
-Human cognition routinely completes patterns from partial information
-\
-\
 
 :::: {.columns}
 ::: {.column width="78%"}
+\
 \
 "The dog chased the [MASK] up a tree."
 
@@ -481,19 +481,18 @@ First major application of masking in language models: **126150 citations**
 :::: {.columns}
 ::: {.column width="65%"}
 Uses bidirectional context.
-\
-\
-Randomly mask 15% of input tokens:
+
+Randomly mask 15\% of input tokens:
 \begin{itemize}
-\item 80\% replace with [MASK]
-\item 10\% replace with random token
-\item 10\% keep original token
-\item Prevents model from just memorizing masks
+\item 80\% of masked tokens: replace with [MASK]
+\item 10\% of masked tokens: replace with random token
+\item 10\% of masked tokens: keep original token
+\item This strategy prevents the model from just memorizing mask positions
 \end{itemize}
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=1.0\textwidth]{Contrastive_and_mask_files/bert_results.png}
+\includegraphics[width=0.95\textwidth]{Contrastive_and_mask_files/bert_results.png}
 \end{center}
 \end{figure}
 :::
@@ -609,7 +608,7 @@ Intuition: Vision-based signals are more redundant than natural language (~15% m
 
 :::: {.columns}
 ::: {.column width="27%"}
-Randomly mask some patches and replace them with token[M].
+Randomly mask some patches and replace them with token [M].
 \
 \
 "tokenize" the image to discrete visual tokens latent codes of dVAE (Discrete Variational Autoencoder)
@@ -618,6 +617,7 @@ Randomly mask some patches and replace them with token[M].
 Pretext task: predicting the visual tokens of the original image based on the corrupted image.
 :::
 ::: {.column width="73%"}
+\vspace{3mm}
 \begin{figure}
 \begin{center}
 \includegraphics[width=1.0\textwidth]{Contrastive_and_mask_files/beit.png}
