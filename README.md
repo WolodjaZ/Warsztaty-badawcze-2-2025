@@ -108,6 +108,14 @@ If your explanation is comprehensive, you'll earn the full **2** points. If your
 - References:
   - TODO
 
+**Exercise**:
+
+Now as I know that you are running out of the GPU from Colab, this task is easier for you as for the part where you need to train the model, I provide the weights for you. So what is this task about? Previously, you learned and checked how SSL models compare to supervised models. Now you will compare them even more. Using the provided [notebook](exercise/week_4.ipynb), this time you will compare 4 different models: one trained from scratch in a supervised way, second in SSL way, third downloaded from PyTorch pretrained library, and finally, going to the basics, you will have to train PCA.
+
+In the previous task, you learned about linear probing (training only the classifier head). This time you will see two more evaluation methods on representations: visualization and an alternative to linear probing - KNN classification. In the previous exercise, you did everything on one dataset, but when we train representation learning models, we want them to be generalizable and not only be able to solve the task on particular data but be able to easily adapt to new data domains.
+
+So you will get 4 models, and you will evaluate them as feature extractors on 3 different datasets. Your main part of this task is to write a short report (really short one) at the end of the notebook. You have questions that I want you to talk about in the report. The report should be about what you learned from this task basically. I don't require using Google Colab anymore, so as a result, you can just send me the notebook (but now in PDF format). After I validate your report, I will give you **1** point for it.
+
 ## Week 5: Interpretable Representation Learning 
 - Group 2: Wednesday, 2025-04-02
 - Group 3: Tuesday, 2025-04-01
