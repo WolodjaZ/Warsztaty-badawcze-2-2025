@@ -1,0 +1,424 @@
+---
+title: "Exploring Self-supervised Learned Representations"
+subtitle: "Representation Learning"
+author: "Vladimir Zaigrajew"
+jupyter: warsztat_badacza
+engine: jupyter
+date: "2025-03-25"
+execute:
+  eval: true
+format:
+  beamer:
+    theme: Warsaw
+    fig-cap: false
+    colortheme: whale
+    fonttheme: serif
+    navigation: horizontal
+    aspectratio: 169
+    header-includes: |
+      \usepackage{subcaption}
+      \titlegraphic{\includegraphics[width=0.2\textwidth]{images/mini.png}}
+      \definecolor{unidarkblue}{RGB}{0,60,113}
+      \definecolor{unilightblue}{RGB}{0,90,169}
+      \setbeamercolor{structure}{fg=unidarkblue}
+      \setbeamerfont{title}{size=\Large,series=\bfseries}
+      \setbeamerfont{frametitle}{size=\large,series=\bfseries}
+      \setbeamertemplate{navigation symbols}{}
+      \setbeamertemplate{footline}{
+        \leavevmode
+        \hbox{
+          \begin{beamercolorbox}[wd=.85\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3em,rightskip=.3em]{structure}
+            \footnotesize{Warsztaty badawcze 2 -- Introduction to Representation Learning -- MINI PW -- 2025}
+          \end{beamercolorbox}
+          \begin{beamercolorbox}[wd=.15\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3em,rightskip=.3em plus 1fil,center]{structure}
+            \footnotesize{\insertframenumber\,/\,\inserttotalframenumber}
+          \end{beamercolorbox}
+        }
+      }
+    code-block-bg: "#f2f2f2"
+    code-block-border-left: "#31BAE9"
+    highlight-style: github
+    fig-width: 8
+    fig-height: 5
+    fig-align: center
+    slide-level: 2
+    incremental: false
+    number-sections: true
+    toc: false
+---
+
+## Introduction to Representation Learning
+Vladimir Zaigrajew -
+vladimir.zaigrajew.dokt@pw.edu.pl
+
+Tymoteusz Kwieciński -
+tymoteuszkwiecinski@gmail.com
+
+You can find us in Room 316, MINI, *PW*
+
+---
+
+Remember every information you can find on our Github Repo:
+
+:::: {.columns}
+::: {.column width="50%"}
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.6\textwidth]{images/repo_qr.png}
+\caption{QR code to course Github Repo}
+\end{center}
+\end{figure}
+:::
+::: {.column width="50%"}
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.6\textwidth]{images/my_qr.png}
+\caption{QR code to our Github Repo}
+\end{center}
+\end{figure}
+:::
+::::
+
+## Recap from last lecture
+- Both contrastive and unmasking task are derived from how humans learn
+- Contrastive task is based on the idea of learning by comparing:
+  - Discriminative learning: Anchor sample with its augmentation as a positive sample to be closer compared to other samples (negative samples)
+  - Postive samples only: Samples are changed by augmentations and the model learns to have similar representations to them
+- Unmasking task is based on the idea of learning by filling in the blanks:
+    - Masked language modeling: The model learns to predict the missing words in a sentence
+    - Image inpainting: The model learns to predict the missing pixels in an image
+- Both tasks are used to pre-train models on large datasets, allowing them to learn useful representations that can be fine-tuned for specific tasks
+- Mode collapse and Representation collapse are two common problems self supervised learning where the model fails to learn meaningful representations due to the lack of diversity in the training data or the model's hacking of the task
+
+## Recap from last lecture
+- Contrastive learning requires a large amount of negative samples to be effective, while unmasking tasks can be more efficient with fewer samples per batch
+- Contrastive learning is more suitable for tasks where the goal is to learn a similarity metric between samples, while unmasking tasks are more suitable for tasks where the goal is to learn a more general representation of the data
+- The current best models from self-supervised learning are based on unmasking tasks, such as BERT or MAE but CLIP is also very popular from contrastive learning
+
+## When to use supervised transfer learning?
+
+:::: {.columns}
+::: {.column width="50%"}
+\vspace{10mm}
+Small number of labeled data
+\
+\
+Big amount of unlabeled data
+\
+\
+Few-shot classification (fast adaptation)
+\
+\
+Small domain shift to the training data distribution
+
+:::
+::: {.column width="50%"}
+\begin{center}
+\includegraphics[width=0.9\textwidth]{Exploring_Self-supervised_Learned_Representations_files/ssl_evaluation.png}
+\end{center}
+:::
+::::
+
+\footnotetext{Ericsson, Linus, Henry Gouk, and Timothy M. Hospedales. "How well do self-supervised models transfer?." Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. 2021.}
+
+## When to use supervised transfer learning?
+\vspace{5mm}
+
+:::: {.columns}
+::: {.column width="60%"}
+Do Imagenet self-supervised CNNs perform well on diverse downstream datasets and tasks?
+\
+\
+Yes to highly correlated datasets such as CIFAR-10, CIFAR-100, STL-10 and others
+\
+\
+However it has low correlation for different tasks such as detection and segmentation, why?
+\
+\
+Is there a best SSL representation overall?
+\
+\
+Is universal pre-training for several downstream tasks possible?
+:::
+::: {.column width="40%"}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Exploring_Self-supervised_Learned_Representations_files/ssl_performance.png}
+\end{center}
+:::
+::::
+
+\footnotetext{Ericsson, Linus, Henry Gouk, and Timothy M. Hospedales. "How well do self-supervised models transfer?." Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. 2021.}
+
+## When to use supervised transfer learning?
+\vspace{5mm}
+
+\textcolor{blue}{\textbf{Do self-supervised and supervised features represent the same information?}}
+
+\textcolor{red}{No}
+
+\begin{itemize}
+    \item self-supervised features seem to discard colour information (next slide)
+    \item improved uncertainty calibration
+    \item Complementary learned features
+\end{itemize}
+
+\footnotetext{Ericsson, Linus, Henry Gouk, and Timothy M. Hospedales. "How well do self-supervised models transfer?." Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. 2021.}
+
+---
+
+Reconstruct RGB images from the features
+
+:::: {.columns}
+::: {.column width="60%"}
+\begin{center}
+\includegraphics[width=0.9\textwidth]{Exploring_Self-supervised_Learned_Representations_files/ssl_colors.png}
+\end{center}
+:::
+::: {.column width="40%"}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Exploring_Self-supervised_Learned_Representations_files/ssl_colors_boxplot.png}
+\end{center}
+
+\footnotetext{Ericsson, Linus, Henry Gouk, and Timothy M. Hospedales. "How well do self-supervised models transfer?." Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. 2021.}
+:::
+::::
+
+## Linear probing VS Fine-tuning on the same domain
+
+\begin{center}
+\includegraphics[width=0.9\textwidth]{Exploring_Self-supervised_Learned_Representations_files/ssl_linear_vs_finetune.png}
+\end{center}
+
+\footnotetext{Ericsson, Linus, Henry Gouk, and Timothy M. Hospedales. "How well do self-supervised models transfer?." Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. 2021.}
+
+## Out-of-domain Few-shot transfer (20-shot) of pre-trained CNNs
+
+\begin{center}
+\includegraphics[width=0.9\textwidth]{Exploring_Self-supervised_Learned_Representations_files/few_shot_transfer.png}
+\end{center}
+
+\footnotetext{Ericsson, Linus, Henry Gouk, and Timothy M. Hospedales. "How well do self-supervised models transfer?." Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. 2021.}
+
+## What do vision transformers (ViTs) learn “on their own”? MoCov3
+
+:::: {.columns}
+::: {.column width="50%"}
+
+Outperform Resnet50 on ImageNet (supervised)
+\
+\
+Better generalization than supervised
+\
+\
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Exploring_Self-supervised_Learned_Representations_files/moco_performance.png}
+\end{center}
+:::
+::: {.column width="50%"}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Exploring_Self-supervised_Learned_Representations_files/moco_generalization.png}
+\end{center}
+:::
+::::
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Exploring_Self-supervised_Learned_Representations_files/moco_generalization_performance.png}
+\end{center}
+
+\footnotetext{Chen, Xinlei, Saining Xie, and Kaiming He. "An empirical study of training self-supervised vision transformers." Proceedings of the IEEE/CVF international conference on computer vision. 2021.}
+
+## What do vision transformers (ViTs) learn “on their own”? DINO
+
+:::: {.columns}
+::: {.column width="35%"}
+\vspace{5mm}
+Excellent k-NN classifiers
+\
+\
+Features are organized in an interpretable way
+\
+\
+Connects categories based on visual characteristics
+\
+\
+\textcolor{blue}{https://ai.meta.com/blog/dino-paws-computer-vision-with-self-supervised-transformers-and-10x-more-efficient-training/}
+:::
+::: {.column width="65%"}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Exploring_Self-supervised_Learned_Representations_files/dino.png}
+\end{center}
+\vspace{5mm}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{Exploring_Self-supervised_Learned_Representations_files/dino_performance.png}
+\end{center}
+:::
+::::
+\footnotetext{Caron, Mathilde, et al. "Emerging properties in self-supervised vision transformers." Proceedings of the IEEE/CVF international conference on computer vision. 2021.}
+
+## Visualization - UMAP / T-SNE
+\vspace{5mm}
+
+:::: {.columns}
+::: {.column width="50%"}
+Colors highlight target labels for the set of targets with the highest F1-scores across 
+all methods.
+:::
+::: {.column width="50%"}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Exploring_Self-supervised_Learned_Representations_files/umap_color.png}
+\end{center}
+:::
+::::
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Exploring_Self-supervised_Learned_Representations_files/umap.png}
+\end{center}
+\footnotetext{Kim, Vladislav, et al. "Self-supervision advances morphological profiling by unlocking powerful image representations. bioRxiv." (2023): 6.}
+
+## Visualization - ViT Attention maps
+
+:::: {.columns}
+::: {.column width="40%"}
+\vspace{20mm}
+\textbf{Class-specific features} lead to unsupervised segmentation masks
+\
+\
+Correlate with the shape of semantic objects in the images
+:::
+::: {.column width="60%"}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Exploring_Self-supervised_Learned_Representations_files/attention_maps.png}
+\end{center}
+:::
+::::
+\footnotetext{Caron, Mathilde, et al. "Emerging properties in self-supervised vision transformers." Proceedings of the IEEE/CVF international conference on computer vision. 2021.}
+
+## Visualization - ViT Attention maps
+\vspace{5mm}
+
+:::: {.columns}
+::: {.column width="35%"}
+\vspace{10mm}
+Attention maps capture explicit semantic information
+\
+\
+\textbf{Does not emerge as clearly with supervised ViTs, nor with convnets!}
+:::
+::: {.column width="65%"}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Exploring_Self-supervised_Learned_Representations_files/attention_maps_comparison.png}
+\end{center}
+:::
+::::
+\footnotetext{Caron, Mathilde, et al. "Emerging properties in self-supervised vision transformers." Proceedings of the IEEE/CVF international conference on computer vision. 2021.}
+
+## Fight: Contrastive vs. Unmasking
+\vspace{5mm}
+“Image-level” VS “token-level” self-supervised learning
+
+:::: {.columns}
+::: {.column width="50%"}
+\begin{center}
+SimCLR/MoCO 
+\end{center}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{Self_supervised_Learning_files/ntxen.png}
+\end{center}
+\footnotetext{Chen, Ting, et al. "A simple framework for contrastive learning of visual representations." International conference on machine learning. PmLR, 2020.}
+:::
+::: {.column width="50%"}
+\begin{center}
+SimMIM
+\end{center}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{Exploring_Self-supervised_Learned_Representations_files/simmim.png}
+\end{center}
+\footnotetext{Xie, Zhenda, et al. "Simmim: A simple framework for masked image modeling." Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. 2022.}
+:::
+::::
+
+## Fight: Contrastive vs. Unmasking
+
+\vspace{5mm}
+The tokens of MoCo form a cluster for each image
+
+:::: {.columns}
+::: {.column width="30%"}
+\vspace{5mm}
+Contrastive -based features are more linearly separable (3 classes)
+\
+\
+3528 tokens
+
+(196 tokens x 18 images) 
+:::
+::: {.column width="70%"}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Exploring_Self-supervised_Learned_Representations_files/clustering.png}
+\end{center}
+:::
+::::
+\footnotetext{Park, Namuk, et al. "What do self-supervised vision transformers learn?." arXiv preprint arXiv:2305.00729 (2023).}
+
+## Fight: Contrastive vs. Unmasking
+\vspace{3mm}
+Contrastive learning → global information
+\
+\
+Masked Image Modeling (MIM) → local areas and similar tokens
+\begin{center}
+\includegraphics[width=0.85\textwidth]{Exploring_Self-supervised_Learned_Representations_files/attention_fight.png}
+\end{center}
+
+collapses into homogeneous maps for all queries and heads
+
+\footnotetext{Park, Namuk, et al. "What do self-supervised vision transformers learn?." arXiv preprint arXiv:2305.00729 (2023).}
+
+## Fight: Contrastive vs. Unmasking
+\vspace{5mm}
+
+:::: {.columns}
+::: {.column width="60%"}
+\vspace{5mm}
+MoCo, DINO outperform MIM methods in linear probing and small model regimes.
+\
+\
+MIM excels in fine-tuning, large model regimes, and dense prediction.
+\
+\
+DINO, BEiT, MAE have consistent properties
+:::
+::: {.column width="40%"}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Exploring_Self-supervised_Learned_Representations_files/fight_contrastive.png}
+\end{center}
+:::
+::::
+\footnotetext{Park, Namuk, et al. "What do self-supervised vision transformers learn?." arXiv preprint arXiv:2305.00729 (2023).}
+
+## Fight: Contrastive vs. Unmasking
+\vspace{5mm}
+MIM shows superior scalability in large model regimes
+\
+\
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Exploring_Self-supervised_Learned_Representations_files/fight_mim.png}
+\end{center}
+
+\footnotetext{Park, Namuk, et al. "What do self-supervised vision transformers learn?." arXiv preprint arXiv:2305.00729 (2023).}
+
+## Closing Thoughts
+\vspace{5mm}
+None :)
+\
+\
+For more, read this lecture from the [Lab of HHU Dusseldorf (clickable link)](https://uni-duesseldorf.sciebo.de/s/NALUEG5AlUzhbI3).
+\
+\
+Also these papers which focus on the analysis of self-supervised representation and comparing it to supervised ones are also good places to go:
+
+- [How well do self-supervised models transfer?](https://openaccess.thecvf.com/content/CVPR2021/papers/Ericsson_How_Well_Do_Self-Supervised_Models_Transfer_CVPR_2021_paper.pdf)
+
+- [An Empirical Study of Training Self-Supervised Vision Transformers](https://openaccess.thecvf.com/content/ICCV2021/papers/Chen_An_Empirical_Study_of_Training_Self-Supervised_Vision_Transformers_ICCV_2021_paper.pdf)
+
+- [Emerging Properties in Self-Supervised Vision Transformers](https://openaccess.thecvf.com/content/ICCV2021/papers/Caron_Emerging_Properties_in_Self-Supervised_Vision_Transformers_ICCV_2021_paper.pdf)
+
+- [What Do Self-Supervised Vision Transformers Learn?](https://arxiv.org/abs/2305.00729)

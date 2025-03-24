@@ -102,11 +102,16 @@ If your explanation is comprehensive, you'll earn the full **2** points. If your
 
 ## Week 4: Exploring Self-supervised Learned Representations 
 - Group 2: Wednesday, 2025-03-26
-- Group 3: Tuesday, 2025-03-25
-- [PDF]() || [Markdown]()
-- TODO  
-- References:
-  - TODO
+- Group 3: Tuesday, 2025-04-25
+- [PDF](lectures/Exploring_Self-supervised_Learned_Representations.pdf) || [Markdown](lectures/Exploring_Self-supervised_Learned_Representations.qmd)
+- Limitations of existing vision language models
+- Self-supervised VS supervised learned feature representations
+- What do vision transformers (ViTs) learn “on their own”?
+- Interesting papers discussed on the lecture:
+  - [How well do self-supervised models transfer?](https://openaccess.thecvf.com/content/CVPR2021/papers/Ericsson_How_Well_Do_Self-Supervised_Models_Transfer_CVPR_2021_paper.pdf)
+  - [An Empirical Study of Training Self-Supervised Vision Transformers](https://openaccess.thecvf.com/content/ICCV2021/papers/Chen_An_Empirical_Study_of_Training_Self-Supervised_Vision_Transformers_ICCV_2021_paper.pdf)
+  - [Emerging Properties in Self-Supervised Vision Transformers](https://openaccess.thecvf.com/content/ICCV2021/papers/Caron_Emerging_Properties_in_Self-Supervised_Vision_Transformers_ICCV_2021_paper.pdf)
+  - [What Do Self-Supervised Vision Transformers Learn?](https://arxiv.org/abs/2305.00729)
 
 **Exercise**:
 

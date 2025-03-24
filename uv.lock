@@ -3445,6 +3445,7 @@ source = { virtual = "." }
 dependencies = [
     { name = "jupyter" },
     { name = "matplotlib" },
+    { name = "nbformat" },
     { name = "numpy" },
     { name = "scikit-learn" },
     { name = "seaborn" },
@@ -3458,6 +3459,7 @@ dependencies = [
 requires-dist = [
     { name = "jupyter", specifier = ">=1.1.1" },
     { name = "matplotlib", specifier = ">=3.10.0" },
+    { name = "nbformat", specifier = ">=5.10.4" },
     { name = "numpy", specifier = "<2.0" },
     { name = "scikit-learn", specifier = ">=1.6.1" },
     { name = "seaborn", specifier = ">=0.13.2" },
