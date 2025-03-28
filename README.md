@@ -129,10 +129,14 @@ So you will get 4 models, and you will evaluate them as feature extractors on 3 
 - References:
   - TODO
 
+**Exercise**:
+
+This is our last exercise before the project. This task aims to combine everything that we've done earlier and add the training and evaluation of [SimCLR model](https://arxiv.org/abs/2002.05709). This task is a combination of exercises from weeks 4 and 5, so some of you may be familiar with the code and the tasks. Basically, in the [notebook](exercise/week_5.ipynb), we have the code to train 2 SSL models (SimCLR and Rotation) and evaluate them on 3 datasets, one on which we will also train it. The task is to fill in the code where required but also to train a model on the rotation task in an SSL way and compare it with the supervised model. In this task, we will use the `GTSRB` dataset which already comes with labels, but we will split the dataset and assume that one part doesn't have labels. You will train the model on the unlabeled part with a rotation task and then compare how it performs on the labeled part. You will compare the results with: the supervised model trained on the labeled part only, the SSL model as a feature extractor for a classifier trained on the labeled part, and the SSL model fully fine-tuned on the labeled part. At the end, I expect you to answer the questions in the notebook in short summary report and do the task it asks you to do. If everything is satisfactory, I will give you **2** points for it.
+
 ## Week 6: Group Formation & Project Planning
 - Group 2: Wednesday, 2025-04-02
 - Group 3: Tuesday, 2025-04-01
-- Group formation (2-3 members)
+- Group formation (2-4 members)
 - Project topic selection and discussion
 - Project expectations overview
 
