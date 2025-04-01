@@ -1,0 +1,355 @@
+---
+title: "Interpretable Representation Learning"
+subtitle: "Representation Learning"
+author: "Vladimir Zaigrajew"
+jupyter: warsztat_badacza
+engine: jupyter
+date: "2025-04-01"
+execute:
+  eval: true
+format:
+  beamer:
+    theme: Warsaw
+    fig-cap: false
+    colortheme: whale
+    fonttheme: serif
+    navigation: horizontal
+    aspectratio: 169
+    header-includes: |
+      \usepackage{subcaption}
+      \titlegraphic{\includegraphics[width=0.2\textwidth]{images/mini.png}}
+      \definecolor{unidarkblue}{RGB}{0,60,113}
+      \definecolor{unilightblue}{RGB}{0,90,169}
+      \setbeamercolor{structure}{fg=unidarkblue}
+      \setbeamerfont{title}{size=\Large,series=\bfseries}
+      \setbeamerfont{frametitle}{size=\large,series=\bfseries}
+      \setbeamertemplate{navigation symbols}{}
+      \setbeamertemplate{footline}{
+        \leavevmode
+        \hbox{
+          \begin{beamercolorbox}[wd=.85\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3em,rightskip=.3em]{structure}
+            \footnotesize{Warsztaty badawcze 2 -- Introduction to Representation Learning -- MINI PW -- 2025}
+          \end{beamercolorbox}
+          \begin{beamercolorbox}[wd=.15\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3em,rightskip=.3em plus 1fil,center]{structure}
+            \footnotesize{\insertframenumber\,/\,\inserttotalframenumber}
+          \end{beamercolorbox}
+        }
+      }
+    code-block-bg: "#f2f2f2"
+    code-block-border-left: "#31BAE9"
+    highlight-style: github
+    fig-width: 8
+    fig-height: 5
+    fig-align: center
+    slide-level: 2
+    incremental: false
+    number-sections: true
+    toc: false
+---
+
+## Introduction to Representation Learning
+Vladimir Zaigrajew -
+vladimir.zaigrajew.dokt@pw.edu.pl
+
+Tymoteusz Kwieciński -
+tymoteuszkwiecinski@gmail.com
+
+You can find us in Room 316, MINI, *PW*
+
+---
+
+Remember every information you can find on our Github Repo:
+
+:::: {.columns}
+::: {.column width="50%"}
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.6\textwidth]{images/repo_qr.png}
+\caption{QR code to course Github Repo}
+\end{center}
+\end{figure}
+:::
+::: {.column width="50%"}
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.6\textwidth]{images/my_qr.png}
+\caption{QR code to our Github Repo}
+\end{center}
+\end{figure}
+:::
+::::
+
+## A Little Bit about Explainable AI
+
+- Explainable AI (XAI) is a subfield of AI that focuses on making the decision-making process of AI systems more transparent and understandable to humans.
+- It aims to provide insights into how AI models arrive at their predictions or decisions, enabling users to trust and interpret the results.
+- XAI is particularly important in high-stakes domains such as healthcare, finance, and autonomous systems, where understanding the rationale behind AI decisions is crucial for safety and accountability.
+
+## A Little Bit about Explainable AI
+
+\vspace{0.5cm}
+Is it hard to explain deep learning models? \textcolor{blue}{\textbf{Yes! those models are a black box to us due to their complexity!}}
+
+\begin{center}
+\includegraphics[width=0.7\textwidth]{Interpretable_Representation_Learning_files/blackbox.png}
+\end{center}
+
+## Examples When XAI is Important
+
+:::: {.columns}
+::: {.column width="65%"}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Interpretable_Representation_Learning_files/example_1_xai.png}
+\end{center}
+:::
+::: {.column width="35%"}
+\vspace{0.5cm}
+Read more at: https://incidentdatabase.ai
+:::
+::::
+:::: {.columns}
+::: {.column width="55%"}
+\begin{figure}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Interpretable_Representation_Learning_files/example_2_xai.png}
+\end{center}
+\end{figure}
+:::
+::: {.column width="45%"}
+\begin{figure}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Interpretable_Representation_Learning_files/example_3_xai.png}
+\end{center}
+\end{figure}
+:::
+::::
+
+## Current State of XAI
+
+:::: {.columns}
+::: {.column width="60%"}
+\textbf{XAI is an active area of research!}
+
+
+Concept-Based Explanation:
+\begin{itemize}
+    \item Uses surrogate models to detect learned concepts within the main model
+    \item Main model predicts classes while surrogate model identifies intermediate concepts
+\end{itemize}
+
+Gradient-Based Explanation:
+\begin{itemize}
+    \item Highlights important input features by analyzing gradients
+    \item Shows which pixels/regions influenced the model's decision
+\end{itemize}
+
+Perturbation-Based Explanation:
+\begin{itemize}
+    \item Identifies critical regions by systematically masking parts of the image
+    \item Reveals which areas must remain visible for classification
+\end{itemize}
+:::
+::: {.column width="40%"}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Interpretable_Representation_Learning_files/concept_based.png}
+\end{center}
+
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Interpretable_Representation_Learning_files/gradient_based.png}
+\end{center}
+
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Interpretable_Representation_Learning_files/perturbation_based.png}
+\end{center}
+:::
+::::
+
+## Concept-based Explainable AI
+
+> Standard XAI methods show where the network is \textbf{looking}, but this is not sufficient to explain what it is \textbf{seeing} in a given input
+
+:::: {.columns}
+::: {.column width="50%"}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Interpretable_Representation_Learning_files/gradient_based.png}
+\end{center}
+:::
+::: {.column width="50%"}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Interpretable_Representation_Learning_files/perturbation_based.png}
+\end{center}
+:::
+::::
+
+Concept based approach tries to explain the model's decision by identifying the concepts that are important for the model's prediction and are human-interpretable.
+
+## What is a concept?
+
+"A concept can be any abstraction, such as a colour, an object, or even an idea"
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Interpretable_Representation_Learning_files/concept_overall.png}
+\end{center}
+\footnotetext{Gabriele Ciravegna. "C-XAI: Concept-Based Explainable AI." Medium. https://medium.com/@gabriele.ciravegna/c-xai-concept-based-explainable-ai-51dece0472f1}
+
+## Post-hoc Concept-based Explanation
+
+Post-hoc approach uses surrogate models to detect learned concepts within the main model. The main model predicts classes while surrogate model identifies intermediate concepts.
+
+\textcolor{green}{\textbf{Advantages}}: Does not require any changes to the main model, can be applied to any model. Maintains the predictive and generalization capabilities of the model, while enhancing its interpretability.
+
+\textcolor{red}{\textbf{Disadvantages}}: Surrogate model may not be able to capture all the concepts learned by the main model. The surrogate model may introduce additional complexity and may not be as interpretable as the main model.
+
+## Post-hoc Concept-based Explanation - Supervised
+
+Analysis network behavior on samples representing symbolic concepts such as color, object, or idea (basically whatever you want).
+
+Assess which concepts are learned, where (which layer), and their influence on the model.
+
+Provide explanations as either:
+
+- Class-concept relations (T-CAV): correlating predictions/class weights with concept projections (e.g., predicting the class of a bird based on its beak, wings, etc).
+
+- Node-concept associations (Network Dissection): linking hidden node activations to specific concepts (e.g., identifying which neurons respond to specific features).
+
+Key examples: T-CAV, IBD, Network Dissection
+
+## Post-hoc Concept-based Explanation - Supervised T-CAV
+
+:::: {.columns}
+::: {.column width="65%"}
+\begin{center}
+\includegraphics[width=0.95\textwidth]{Interpretable_Representation_Learning_files/tcav.png}
+\end{center}
+
+\begin{center}
+\includegraphics[width=0.85\textwidth]{Interpretable_Representation_Learning_files/tcav_example.png}
+\end{center}
+:::
+::: {.column width="35%"}
+Train a linear classifier to predict the concept from the activations of the last layer of the model.
+\
+\
+Combining gradient and linear classifier to determine the influence of a concept on the model's prediction.
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Interpretable_Representation_Learning_files/tcav_eq.png}
+\end{center}
+\footnotetext{Kim, Been, et al. "Interpretability beyond feature attribution: Quantitative testing with concept activation vectors (tcav)." International conference on machine learning. PMLR, 2018.}
+:::
+::::
+
+## Post-hoc Concept-based Explanation - Unsupervised
+
+Identifies unsupervised clusters of samples (unsupervised concept basis) that influence predictions or classes.
+
+Primarily provides explanations as class-concept relations.
+
+Differ from standard XAI methods by selecting features based on their ability to represent other input samples, not just saliency or internal similarity.
+\begin{center}
+\includegraphics[width=0.8\textwidth]{Interpretable_Representation_Learning_files/ace.png}
+\end{center}
+Key examples: ACE, On Completeness-aware, SAE.
+
+## Post-hoc Concept-based Explanation - Unsupervised SAE
+
+Trains an sparse autoencoder to learn to disentangle polisemantic representation into interpretable monosemantic one.
+
+Uses the concept of dictionary learning, sparse coding and autoencoders.
+
+:::: {.columns}
+::: {.column width="60%"}
+\begin{center}
+\includegraphics[width=0.75\textwidth]{Interpretable_Representation_Learning_files/sae.png}
+\end{center}
+
+\begin{center}
+\includegraphics[width=0.5\textwidth]{Interpretable_Representation_Learning_files/sae_eq.png}
+\end{center}
+:::
+::: {.column width="40%"}
+\begin{center}
+\includegraphics[width=0.9\textwidth]{Interpretable_Representation_Learning_files/sae_2.png}
+\end{center}
+
+\footnotetext{Zaigrajew, Vladimir, Hubert Baniecki, and Przemyslaw Biecek. "Interpreting CLIP with Hierarchical Sparse Autoencoders." arXiv preprint arXiv:2502.20578 (2025).}
+:::
+::::
+
+## Post-hoc Concept-based Explanation - Unsupervised SAE
+
+:::: {.columns}
+::: {.column width="50%"}
+\begin{center}
+\includegraphics[width=0.9\textwidth]{Interpretable_Representation_Learning_files/sae_ex_1.png}
+\end{center}
+
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Interpretable_Representation_Learning_files/sae_ex_3.png}
+\end{center}
+:::
+::: {.column width="50%"}
+\begin{center}
+\includegraphics[width=0.62\textwidth]{Interpretable_Representation_Learning_files/sae_ex_2.png}
+\end{center}
+
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Interpretable_Representation_Learning_files/sae_ex_4.png}
+\end{center}
+:::
+::::
+
+## Explainable-by-design Concept-based Models
+\vspace{0.5cm}
+> Explainable-by-design concept-based models depart from standard neural network training practices by explicitly incorporating a set of concepts within the same neural network architecture.
+
+Concept-based Models learns two models often sequentially $f$ and $g$, 
+where $g$ is a concept-based model $g: X \to C$ and $f$ is a classifier $f: C \to Y$. Concepts $C$ are learned in a supervised manner, while the classifier $f$ is a linear probing model.
+
+\textcolor{green}{\textbf{Advantages}}: Concept-based Models ensure that the network explicitly learns a set of concepts that are interpretable to humans. Additionally, domain experts can adjust predicted values for specific concepts and observe changes in the model’s output, enabling the generation of counterfactual explanations.
+
+\textcolor{red}{\textbf{Disadvantages}}: However, these methods can only be used when training a model from scratch is feasible, potentially tailoring it to the specific task. Furthermore, in simpler solutions, the predictive accuracy of concept-based models may be lower than that of standard black-box models.
+
+## Explainable-by-design Concept-based Models - CBM
+
+:::: {.columns}
+::: {.column width="65%"}
+\vspace{0.5cm}
+We require the dataset to be annotated with concepts. The model is trained to predict the concepts and the classes.
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Interpretable_Representation_Learning_files/cbm_example.png}
+\end{center}
+:::
+::: {.column width="35%"}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{Interpretable_Representation_Learning_files/cbm.png}
+\end{center}
+:::
+::::
+In paper authors used X-ray grading (OAI) dataset and bird identification (CUB) dataset. The CUB dataset consists of images, and the concepts are the parts of the bird (e.g. beak, wings, etc.) and the classes are the species of the bird.
+\footnotetext{Koh, Pang Wei, et al. "Concept bottleneck models." International conference on machine learning. PMLR, 2020.}
+
+## Explainable-by-design Concept-based Models
+\textbf{Categories of concept-based models:}
+
+- \textit{Supervised}: Require symbolic concept annotations. Can be jointly trained with task supervision or embedded via separate concept learning. Examples: CBM, CEM, Concept Whitening.
+
+- \textit{Unsupervised}: Autonomously extract concepts without predefined symbols. May use unsupervised concept basis or encode prototype-concepts representing common input samples. Examples: SENN, BotCL, ProtoPNet.
+
+- \textit{Hybrid}: Integrate both supervised and unsupervised concepts, enabling use when few supervised concepts are available. Examples: CBM-AUC, GlanceNets.
+
+- \textit{Generative}: Use external generative models to define textual concepts as numerical representations for class prediction. During testing, predict both class and most suitable descriptions. Examples: LaBO, Label-free CBM.
+
+## Closing Thoughts
+
+XAI is an active area of research with many approaches and methods, as there is no one-size-fits-all solution in XAI.
+
+Recently, concept-based models have gained popularity due to their ability to provide interpretable explanations.
+
+We can leverage internal representations of the model to provide explanations or to modify the model predictions based on the concepts.
+
+We can also train explainable-by-design concept bottleneck models that are interpretable by design. However this method also faces some limitations.
+
+References:
+
+- For Concept Based Methods this [blog post](https://medium.com/@gabriele.ciravegna/c-xai-concept-based-explainable-ai-51dece0472f1) is a great source of information.
+
+- For a more in-depth overview of XAI methods, you can read [Christopher Molnar's book](https://christophm.github.io/interpretable-ml-book/) or just ask Professor Biecek, as he is one of the leading experts in the field.

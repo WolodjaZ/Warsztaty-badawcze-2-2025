@@ -124,10 +124,14 @@ So you will get 4 models, and you will evaluate them as feature extractors on 3 
 ## Week 5: Interpretable Representation Learning 
 - Group 2: Wednesday, 2025-04-02
 - Group 3: Tuesday, 2025-04-01
-- [PDF]() || [Markdown]()
-- TODO  
+- [PDF](lectures/Interpretable_Representation_Learning.pdf) || [Markdown](lectures/Interpretable_Representation_Learning.qmd)
+- XAI is an active area of research just ask Professor Biecek.
+- There is various methods to interpret the model, but they are not perfect and have their limitations.
+- Recently concept-based methods are getting more and more popular. They are based on the idea that we can use human-understandable concepts to explain the model's predictions.
+- We can leverage internal representations of the model or train a concept representation model to learn the concepts, which can enhance interpretability and provide insights into model behavior. 
 - References:
-  - TODO
+  - For Concept Based Methods this [blog post](https://medium.com/@gabriele.ciravegna/c-xai-concept-based-explainable-ai-51dece0472f1) is a great beginning. 
+  - For a more in-depth overview of XAI methods, you can read [Christopher Molnar's book](https://christophm.github.io/interpretable-ml-book/).
 
 **Exercise**:
 
