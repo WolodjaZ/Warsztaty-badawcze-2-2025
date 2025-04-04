@@ -119,34 +119,34 @@ This project explores using Sparse Autoencoders (SAEs) as concept-based models f
 
 ### Project 4: Analyzing LLMs as Automatic Interpretability Tools
 **Project Overview**
-This project examines the effectiveness of Large Language Models (LLMs) as zero/few-shot learners from neural network representations. Can LLMs "read" what concepts are encoded in a representation without specialized training? Students will compare LLMs against purpose-built supervised predictors and analyze their relative performance on concept detection tasks.
+This project examines the effectiveness of Large Language Models (LLMs) as zero/few-shot learners from neural network representations. Can LLMs "read" what concepts trained models predict just by looking at input-output pairs? Next, students will test if LLMs can simulate the analyzed model's behavior.
 
 **Project Goals**
-- Prepare concept datasets that pair model representations (x) with human-interpretable concepts (y)
-- Evaluate how well LLMs can predict concepts from representations without specialized training
-- Train dedicated concept predictors for comparison
-- Assess whether LLMs can serve as general-purpose interpretability tools
+- Find model and concept datasets that pair model representations (x) with human-interpretable concepts (y)
+- Evaluate how well LLMs can guess the concepts based on model predictions
+- Evaluate how well LLMs can simulate the model's behavior
 
 <span style="color:green">Basic Requirements</span>
-- Prepare concept dataset:
-  - Identify suitable datasets for text concept prediction
-  - Generate representation-concept pairs (x,y) using a self-supervised learning model
+- Find Model and Concept dataset:
+  - Identify model on Hugging Face Hub that predicts some concepts based on the input
+  - Prepare a dataset that model can use to predict concepts
 - Set up an interpretation pipeline:
   - Implement LLM-based interpretation using careful prompt engineering
   - Design effective prompting strategies
-  - Create evaluation metrics to assess concept prediction accuracy
+  - Create evaluation metrics to assess concept prediction accuracy and simulation performance
 
 <span style="color:purple">Intermediate Requirements</span>
-- If a suitable dataset is not available, adapt a text classification dataset for this purpose
-- Conduct comprehensive comparison experiments with one of the following:
+- If a suitable dataset is not available, adapt a text classifier, for example, a sentiment analysis model
+- Conduct comprehensive comparison experiments on both tasks with one of the following:
   - Test multiple LLM sizes to analyze scaling properties
   - Experiment with various prompting strategies
 - Document and analyze results systematically
 
 <span style="color:red">Advanced Requirements</span>
-- Train a specialized concept predictor on the concept dataset
-- Compare performance with the LLM-based approach
-- Analyze tradeoffs between specialized training and general LLM capabilities
+- Choose one:
+  - Find another model and dataset to test LLMs
+  - Train yourself a model that predicts concepts based on the input with the dataset you prepared
+- Do the same experiments as before and compare results with the previous model
 
 **Computation Requirements:** *high*
 
@@ -258,17 +258,16 @@ This project explores using Sparse Autoencoders (SAEs) for concept-based explain
 
 <span style="color:purple">Intermediate Requirements</span>
 - Prepare a comprehensive evaluation pipeline
-- Train downstream models on two datasets: CelebA and ImageNet-1k
-- Compare SAE-based explanations with standard TCAV explanations
-- Analyze the relationship between model predictions and explanations
-- Evaluate how SAE's explanations relate to ground truth attributes when available
+- Train downstream models on CelebA dataset
+- Evaluate how SAE's explanations relate to ground truth attributes
+- Compare SAE-based explanations with standard TCAV explanations and new SAE-TCAV method
+- Analyze the relationship between model predictions and concepts from our methods
 
 <span style="color:red">Advanced Requirements</span>
-- Prepare a training pipeline for downstream models that deliberately suppresses a chosen concept
+- Prepare a training pipeline for downstream models that deliberately suppresses a chosen concept using SAE
 - Train a modified downstream model on the CelebA dataset with the suppressed concept
-- Evaluate both standard and concept-suppressed models, comparing their results
-- Evaluate whether the concept-suppression was effective using your SAE-TCAV method
-- Quantify explanations using metrics like robustness, stability, consistency, and understandability
+- Evaluate new model with SAE, TCAV, and SAE-TCAV methods
+- Compare results with the baseline model, check what have changed and what have not
 
 **Computation Requirements:** *low/medium*
 
